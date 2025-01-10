@@ -47,7 +47,7 @@ abilities {
     description = "Mera switches between a Sword and a Blaster. Gains +30% attack speed for 5s."
     hotkey = "e"
     abilityType = "toggle"
-    togglesMode = "attack"
+    togglesMode = "weapon"
   }
 }
 
