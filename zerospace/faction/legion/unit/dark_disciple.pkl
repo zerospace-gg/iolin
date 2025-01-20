@@ -1,20 +1,21 @@
 amends ".../engine/unit.pkl"
 
-name = "Radiant"
+name = "Dark Disciple"
 hotkey = "e"
 unitType = "army"
-tier = "T3"
+tier = "T2"
 hexiteCost = 75
 fluxCost = 75
 buildTime = 36
-supply = 3
-hp = 200
+supply = 2
+hp = 225
 armorType = "light"
-speed = 475
+speed = 525
 vision = 1800
 createdBy { import("../building/legion_barracks.pkl").slug }
 unlockedBy { import("../building/terror_tower.pkl").slug }
-upgradedBy { import("../building/warehouse.pkl").slug }
+upgradedBy { import("../building/citadel.pkl").slug }
+infuseCost = 8
 
 tags {
   "legion:thrall"

@@ -2,6 +2,7 @@ amends ".../engine/production_building.pkl"
 tier = "T3"
 shortName = "Lg. Incubator"
 name = "Large Incubator"
+buildTime = 50
 creates {
   import("../unit/reaver.pkl").slug
   import("../unit/weaver.pkl").slug

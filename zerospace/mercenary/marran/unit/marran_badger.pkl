@@ -18,6 +18,8 @@ abilities {
     range = 1300
     targets { "air"; "ground" }
     abilityType = "attack"
+    bonusPercent = 50
+    bonusVsTags { "flyer" }
   }
 }
 uuid = "bd14c4a6-d658-4de0-9020-5e806f6ddd08"

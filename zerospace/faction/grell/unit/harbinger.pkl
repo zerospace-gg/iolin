@@ -4,14 +4,15 @@ name = "Harbinger"
 unitType = "army"
 tier = "T2"
 hotkey = "w"
-hexiteCost = 100
+hexiteCost = 75
 fluxCost = 50
 buildTime = 26
 supply = 4
-hp = 450
+hp = 420
 armorType = "heavy"
 armor = 1
-speed = 500
+speed = 425
+infuseCost = 7
 
 createdBy { import("../building/medium_incubator.pkl").slug }
 unlockedBy { import("../building/medium_incubator.pkl").slug }
@@ -20,8 +21,8 @@ upgradedBy { import("../building/advanced_augmentation_pool.pkl").slug }
 abilities {
   ["Acidic Spit"] {
     damage = 27
-    range = 625
-    cooldown = 1.5
+    range = 400
+    cooldown = 2
     targets { "ground"; "air" }
     abilityType = "attack"
   }
@@ -32,7 +33,7 @@ abilities {
     targets { "air"; "ground"  }
     targetMode = "location"
     hotkey = "e"
-    energyType = "abes"
+    energyType = "health"
     energyCost = 8
     delay = 1.5
     areaDamage = 120

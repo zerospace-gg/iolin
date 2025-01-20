@@ -2,7 +2,7 @@ extends "unit.pkl"
 
 unitType = "harvester";
 tier = "T0"
-hexiteCost = 175
+hexiteCost = 200
 buildTime = 25
 maxOwned = 5
 rebuildTime = 60

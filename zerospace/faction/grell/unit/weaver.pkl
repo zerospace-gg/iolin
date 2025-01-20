@@ -16,6 +16,7 @@ inGame = true
 createdBy { import("../building/large_incubator.pkl").slug }
 unlockedBy { import("../building/large_incubator.pkl").slug }
 upgradedBy { import("../building/special_augmentation_pool.pkl").slug }
+infuseCost = 11
 
 abilities {
   ["Attack"] {
@@ -29,16 +30,16 @@ abilities {
   }
 
   ["Cocoon"] {
-    description = "Traps the targeted unit in a cocoon, making it invulnerable (unable to attack, be attacked, use abilities, or be affected by abilities) for 3 seconds. If the targeted unit is an allied unit it will heal for 400 health"
+    description = "Traps the targeted unit in a cocoon, making it invulnerable (unable to attack, be attacked, use abilities, or be affected by abilities) for 3 seconds. If the targeted unit is an allied unit it will heal for 195 health"
     energyCost = 50
     energyType = "classic"
     abilityType = "spell"
   }
 
-  ["Healing Boost"] {
-    description = "double passive healing in an area"
-    abilityType = "passive"
-  }
+  // ["Healing Boost"] {
+  //   description = "double passive healing in an area"
+  //   abilityType = "passive"
+  // }
 }
 
 upgrades {

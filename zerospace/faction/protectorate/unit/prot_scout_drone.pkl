@@ -9,6 +9,8 @@ supply = 1
 hp = 50
 domain = "air"
 maxOwned = 2
+speed = 800
+infuseCost = 2
 
 createdBy {
   import("../building/operating_tower.pkl").slug

@@ -1,11 +1,13 @@
 amends ".../engine/production_building.pkl"
 tier = "T1"
 name = "Barracks"
+buildTime = 30
+
 creates {
   import("../unit/thrall.pkl").slug
   import("../unit/steelsworn.pkl").slug
   import("../unit/exalted.pkl").slug
-  import("../unit/radiant.pkl").slug
+  import("../unit/dark_disciple.pkl").slug
 }
 createdBy {
   import("../unit/legion_build_drone.pkl").slug
@@ -13,6 +15,5 @@ createdBy {
 unlocks {
   import("../unit/thrall.pkl").slug
   import("../unit/steelsworn.pkl").slug
-  import("../unit/exalted.pkl").slug
 }
 uuid = "141ec536-0105-4be6-b680-17db25339f4f"

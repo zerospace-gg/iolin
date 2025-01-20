@@ -25,7 +25,7 @@ hidden constructingVersion: Listing<ConstructingUnit> = new {
 
 vision: Number? = 1800
 
-infusable: Boolean = subtype == "army" && !tags.toList().contains("massive")
+infusable: Boolean = subtype == "army" || subtype == "merc" && !tags.toList().contains("massive")
 mindControllable: Boolean = subtype != "hero"
 
 variants {

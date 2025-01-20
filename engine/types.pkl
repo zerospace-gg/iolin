@@ -47,7 +47,7 @@ typealias AllyDomainType = "friendly/air" | "friendly/ground"
 typealias TargetType = DomainType | AllyDomainType | "self" | "map"
 typealias TargetMode = "gamepiece" | "location" | "around-self" | "strip"
 
-typealias EnergyType = "classic" | "abes" | "topbar"
+typealias EnergyType = "classic" | "abes" | "topbar" | "health"
 
 
 function makeSlug(s: String): String =

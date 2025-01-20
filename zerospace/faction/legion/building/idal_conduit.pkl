@@ -1,8 +1,8 @@
 amends ".../engine/supply_building.pkl"
 name = "Idal Conduit"
 energy = 100
+hp = 700
 buildTime = 15
-hp = 750
 createdBy {
   import("../unit/legion_build_drone.pkl").slug
 }

@@ -3,6 +3,7 @@ tier = "T2.5"
 
 name = "Armory"
 hp = 1000
+buildTime = 25
 createdBy {
   import("../unit/legion_build_drone.pkl").slug
 }

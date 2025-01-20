@@ -8,14 +8,15 @@ hexiteCost = 100
 fluxCost = 200
 supply = 6
 hp = 800
-speed = 375
+speed = 400
+infuseCost = 16
 armorType = "heavy"
 armor = 1
 abilities {
   ["Attack"] {
     damage = 3
     volleys = 2
-    bonusPercent = 50
+    bonusPercent = 100
     bonusVsTags { "armor:light" }
     cooldown = 0.17
     range = 950

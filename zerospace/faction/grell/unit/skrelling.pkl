@@ -31,25 +31,11 @@ abilities {
 }
 
 upgrades {
-  ["Fast Wings"] {
+  ["Air Bonus"] {
     tier = "T2.5"
-    description = "+20% movement speed"
+    description = "Increase bonus damage vs air by 100%"
     fluxCost = 100
     researchTime = 50
-  }
-
-  ["Increased Vitality"] {
-    tier = "T2.5"
-    description = "+30% Health"
-    fluxCost = 100
-    researchTime = 50
-  }
-
-  ["Volatile Acids"] {
-    tier = "T3.5"
-    description = "Increases bonus vs air percent by 100%"
-    fluxCost = 125
-    researchTime = 60
   }
 
   ["Suicide"] {

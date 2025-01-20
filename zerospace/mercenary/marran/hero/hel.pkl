@@ -6,7 +6,7 @@ speed = 500
 armorType = "medium"
 abilities {
   ["Attack"] {
-    damage = 26
+    damage = 30
     cooldown = 1.8
     range = 1600
     abilityType = "attack"

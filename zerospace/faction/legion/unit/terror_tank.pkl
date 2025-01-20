@@ -20,6 +20,7 @@ stunResist = 75
 buildTime = 40
 createdBy { import("../unit/legion_build_drone.pkl").slug }
 unlockedBy { import("../building/terror_tower.pkl").slug }
+infuseCost = 100
 
 constructingVersion {
   new {

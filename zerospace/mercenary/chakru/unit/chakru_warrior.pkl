@@ -3,13 +3,14 @@ shortName = "Warrior"
 name = "Cha'Kru Warrior"
 unitType = "merc"
 tier = "T1"
-hexiteCost = 200
+hexiteCost = 225
 fluxCost = 0
 buildCount = 2
 supply = 3
 hp = 200
 speed = 875
 armorType = "light"
+infuseCost = 4
 abilities {
   ["Knife Throw"] {
     damage = 18

@@ -17,6 +17,7 @@ armor = 1
 stunResist = 75
 buildTime = 30
 domain = "air"
+infuseCost = 100
 
 constructingVersion {
   new {

@@ -1,0 +1,28 @@
+amends ".../engine/hero.pkl"
+
+name = "Sabretooth"
+hp = 200
+armorType = "medium"
+speed = 525
+hexiteCost = 150
+fluxCost = 150
+stunResist = 50
+supply = 0
+buildTime = 30
+
+abilities {
+  ["Attack"] {
+    damage = 30
+    cooldown = 2
+    range = 170
+    abilityType = "attack"
+    targets { "ground" }
+  }
+
+  ["Feed"] {
+    description = "Any allied beast that dies anywhere on the map grants +1 dmg and +20hp to Sabretooth."
+    abilityType = "passive"
+  }
+}
+
+uuid = "57355de4-49e0-4745-b70e-38f9266230a7"

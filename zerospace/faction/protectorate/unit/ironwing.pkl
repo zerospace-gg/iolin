@@ -4,7 +4,7 @@ name = "Ironwing"
 tier = "T2"
 unitType = "army"
 supply = 5
-hexiteCost = 50
+hexiteCost = 75
 fluxCost = 100
 buildTime = 45
 energy = 100
@@ -14,6 +14,7 @@ unlockedBy { import("../building/factory.pkl").slug }
 
 hp = 300
 speed = 575
+infuseCost = 9
 
 domain = "air"
 

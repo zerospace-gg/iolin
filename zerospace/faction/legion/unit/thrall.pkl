@@ -5,16 +5,16 @@ name = "Thrall"
 hotkey = "q"
 tier = "T1"
 unitType = "army"
-hexiteCost = 75
+hexiteCost = 50
 buildTime = 24
 supply = 1
 buildCount = 2
-hp = 125
+hp = 100
 armorType = "light"
-speed = 500
+speed = 525
 createdBy { import("../building/legion_barracks.pkl").slug }
 unlockedBy { import("../building/legion_barracks.pkl").slug }
-upgradedBy { import("../building/warehouse.pkl").slug }
+upgradedBy { import("../building/citadel.pkl").slug }
 
 tags {
   "legion:thrall"
@@ -23,8 +23,8 @@ tags {
 abilities {
   ["Attack"] {
     damage = 7
-    cooldown = 0.84
-    range = 800
+    cooldown = 0.85
+    range = 750
     abilityType = "attack"
     targets { "air"; "ground" }
   }

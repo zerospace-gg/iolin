@@ -7,7 +7,7 @@ speed = 500
 abilities {
   ["Pulse Rifle"] {
     damage = 21
-    cooldown = 1.5
+    cooldown = 1.35
     range = 1200
     targets { "ground"; "air" }
     abilityType = "attack"

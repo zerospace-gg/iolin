@@ -11,6 +11,7 @@ hp = 350
 shields = 350
 armorType = "heavy"
 speed = 400
+infuseCost = 18
 abilities {
   ["Attack"] {
     damage = 50

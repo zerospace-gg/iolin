@@ -20,8 +20,8 @@ upgradedBy { import("../building/specialized_research_lab.pkl").slug }
 
 abilities {
   ["Attack"] {
-    damage = 38
-    cooldown = 0.8
+    damage = 42
+    cooldown = 1.2
     range = 1100
     targets { "ground" }
     abilityType = "attack"

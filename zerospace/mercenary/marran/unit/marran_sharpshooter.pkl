@@ -8,9 +8,10 @@ hexiteCost = 50
 fluxCost = 200
 supply = 3
 hp = 100
-shields = 75
+shields = 100
 armorType = "light"
 speed = 450
+infuseCost = 5
 abilities {
   ["Attack"] {
     damage = 15
@@ -18,6 +19,8 @@ abilities {
     range = 1200
     targets { "air"; "ground" }
     abilityType = "attack"
+    bonusPercent = 50
+    bonusVsTags { "armor:light" }
   }
   ["Firing Position"] {
     delay = 1

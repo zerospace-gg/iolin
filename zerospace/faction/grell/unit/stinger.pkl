@@ -8,18 +8,18 @@ hexiteCost = 50
 buildTime = 18
 supply = 1
 buildCount = 2
-hp = 120
+hp = 110
 armorType = "light"
-speed = 625
+speed = 650
 createdBy { import("../building/incubator.pkl").slug }
 unlockedBy { import("../building/incubator.pkl").slug }
 upgradedBy { import("../building/augmentation_pool.pkl").slug }
 
 abilities {
   ["Claws"] {
-    damage = 5
+    damage = 6
     targets { "ground" }
-    cooldown = 0.6
+    cooldown = 0.7
     range = 100
     delay = 0.06 // one of the few damage point values we know
     abilityType = "attack"
@@ -27,26 +27,20 @@ abilities {
 }
 
 upgrades {
-  ["Fast Legs"] {
-    description = "Increase Stinger movement speed by 30%"
+  ["Cliff Jumping"] {
+    description = "Stingers can jump up and down normal cliffs. +20% movement speed."
     tier = "T1.5"
-    fluxCost = 75
-    researchTime = 40
+    fluxCost = 100
+    researchTime = 45
   }
 
   ["Poison Sting"] {
-    description = "Attacks deal 8 dps and slows move speed by 25%. Lasts for 5 seconds."
+    description = "Attacks deal 6 dps and slows move speed by 25%. Lasts for 5 seconds."
     tier = "T2.5"
-    fluxCost = 100
+    fluxCost = 125
     researchTime = 60
   }
 
-  ["Cliff Jumping"] {
-    description = "Stingers can jump up and down normal cliffs. +20% movement speed."
-    tier = "T2.5"
-    fluxCost = 150
-    researchTime = 60
-  }
 }
 
 // notes

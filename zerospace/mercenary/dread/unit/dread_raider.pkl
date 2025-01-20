@@ -8,8 +8,9 @@ hexiteCost = 175
 fluxCost = 0
 supply = 2
 hp = 175
-speed = 575
+speed = 650
 armorType = "light"
+infuseCost = 3
 abilities {
   ["Attack"] {
     damage = 18

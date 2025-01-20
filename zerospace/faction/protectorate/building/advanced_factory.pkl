@@ -6,7 +6,7 @@ tier = "T3"
 hexiteCost = 150
 fluxCost = 100
 hp = 1400
-buildTime = 35
+buildTime = 50
 
 creates {
   import("../unit/cyclops.pkl").slug

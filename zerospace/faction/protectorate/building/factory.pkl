@@ -3,9 +3,9 @@ amends ".../engine/production_building.pkl"
 name = "Factory"
 tier = "T2"
 hexiteCost = 125
-fluxCost = 25
+fluxCost = 50
 hp = 1200
-buildTime = 30
+buildTime = 40
 
 creates {
   import("../unit/predator.pkl").slug

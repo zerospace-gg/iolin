@@ -16,7 +16,8 @@ creates {
   import("../building/idal_conduit.pkl").slug
   import("../building/legion_barracks.pkl").slug
   import("../building/terror_tower.pkl").slug
-  import("../building/warehouse.pkl").slug
+  import("../building/beastiary.pkl").slug
+  import("../building/citadel.pkl").slug
   import("../building/armory.pkl").slug
   import("../unit/dreadnought.pkl").slug
   import("../unit/terror_tank.pkl").slug

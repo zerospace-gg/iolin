@@ -10,6 +10,7 @@ supply = 4
 hp = 625
 speed = 550
 armorType = "medium"
+infuseCost = 9
 abilities {
   ["Attack"] {
     damage = 50

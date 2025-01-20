@@ -5,12 +5,13 @@ tier = "T2.5"
 unitType = "army"
 description = "Yeah, I mean, I like commandos just fine. They're cool. But what if we made a robot commando?"
 supply = 5
-hexiteCost = 50
-fluxCost = 150
+hexiteCost = 100
+fluxCost = 100
 buildTime = 40
 createdBy { import("../building/factory.pkl").slug }
 upgradedBy { import("../building/mechanical_research_lab.pkl").slug }
 unlockedBy { import("../building/factory.pkl").slug }
+infuseCost = 11
 
 hp = 425
 speed = 525
@@ -19,11 +20,11 @@ armorType = "medium"
 abilities {
   ["Attack"] {
     targets { "ground" }
-    damage = 8
+    damage = 6
     volleys = 2
     shots = 2
     cooldown = 1
-    range = 1400
+    range = 1000
     abilityType = "attack"
   }
 

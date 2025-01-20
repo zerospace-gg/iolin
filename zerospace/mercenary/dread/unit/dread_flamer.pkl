@@ -7,6 +7,7 @@ buildCount = 3
 hexiteCost = 100
 fluxCost = 200
 supply = 6
+infuseCost = 16
 hp = 1250
 armorType = "heavy"
 armor = 1
@@ -16,7 +17,7 @@ abilities {
     damage = 8
     volleys = 2
     bonusPercent = 50
-    bonusVsTags { "armor:light"; "building" }
+    bonusVsTags { "armor:light" }
     cooldown = 0.25
     range = 350
     targets { "ground" }

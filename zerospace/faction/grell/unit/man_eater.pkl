@@ -9,11 +9,10 @@ hexiteCost = 125
 fluxCost = 25
 buildTime = 36
 supply = 4
-hp = 440
+hp = 450
 armorType = "medium"
 armor = 1
 speed = 560
-infuseCost = 5
 
 createdBy { import("../building/medium_incubator.pkl").slug }
 unlockedBy { import("../building/medium_incubator.pkl").slug }
@@ -26,10 +25,10 @@ abilities {
     cooldown = 1.78
     targets { "ground" }
     abilityType = "attack"
-    bonusPercent = 50
+    bonusPercent = 100
     bonusVsTags { "armor:light" }
     splashPercent = 100
-    splashRange = 110
+    splashRange = 125
   }
 
   ["Burrow"] {

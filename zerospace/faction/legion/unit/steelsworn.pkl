@@ -14,7 +14,7 @@ armorType = "medium"
 speed = 525
 createdBy { import("../building/legion_barracks.pkl").slug }
 unlockedBy { import("../building/legion_barracks.pkl").slug }
-upgradedBy { import("../building/warehouse.pkl").slug }
+upgradedBy { import("../building/citadel.pkl").slug }
 
 tags {
   "legion:thrall"

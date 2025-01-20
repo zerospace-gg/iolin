@@ -6,7 +6,7 @@ tier = "T2"
 buildCount = 1
 hexiteCost = 75
 fluxCost = 150
-supply = 8
+supply = 6
 hp = 700
 speed = 600
 armorType = "heavy"
@@ -14,11 +14,13 @@ abilities {
   ["Attack"] {
     damage = 8
     cooldown = 0.4
-    range = 1400
+    range = 1200
     targets { "ground" }
     chargeTime = 5
     chargeMaxMultiplier = 3
     abilityType = "attack"
+    bonusPercent = 100
+    bonusVsTags { "flyer" }
   }
   ["Pull"] {
     cooldown = 30

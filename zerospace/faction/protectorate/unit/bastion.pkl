@@ -15,6 +15,7 @@ unlockedBy { import("../building/research_lab.pkl").slug }
 hp = 300
 armorType = "medium"
 speed = 500
+infuseCost = 4
 
 abilities {
   ["G53 Light Flamethrower"] {
@@ -23,7 +24,7 @@ abilities {
     cooldown = 0.96
     range = 500
     bonusVsTags { "armor:light" }
-    bonusPercent = 50
+    bonusPercent = 75
     splashPercent = 30
     splashRange = 100
     abilityType = "attack"

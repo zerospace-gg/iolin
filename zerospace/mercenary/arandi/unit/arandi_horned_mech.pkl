@@ -11,6 +11,7 @@ hp = 350
 armorType = "heavy"
 speed = 450
 armor = 2
+infuseCost = 7
 
 abilities {
   ["Energy Pulsar"] {

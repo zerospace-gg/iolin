@@ -4,11 +4,12 @@ name = "Arandi Shade"
 shortName = "Shade"
 unitType = "merc"
 tier = "T1"
-hexiteCost = 250
+hexiteCost = 225
 buildCount = 3
 supply = 2
 hp = 250
 speed = 650
+infuseCost = 4
 armorType = "light"
 
 abilities {

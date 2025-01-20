@@ -1,5 +1,6 @@
 amends ".../engine/production_building.pkl"
 tier = "T1"
+buildTime = 35
 
 name = "Incubator"
 creates {

@@ -1,0 +1,20 @@
+amends ".../engine/production_building.pkl"
+name = "Beastiary"
+tier = "T1"
+hexiteCost = 100
+fluxCost = 25
+buildTime = 30
+hp = 1000
+
+createdBy {
+  import("../unit/legion_build_drone.pkl").slug
+}
+
+creates {
+  import("../unit/exalted.pkl").slug
+  import("../unit/mammoth.pkl").slug
+}
+unlocks {
+  import("../unit/exalted.pkl").slug
+}
+uuid = "e0013b48-a7fa-4764-bfcb-008ae4bc056c"

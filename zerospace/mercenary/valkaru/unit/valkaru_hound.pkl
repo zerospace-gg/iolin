@@ -9,12 +9,12 @@ fluxCost = 0
 supply = 2
 hp = 350
 armorType = "medium"
-speed = 600
+speed = 500
 abilities {
   ["Attack"] {
-    damage = 21
+    damage = 18
     cooldown = 1.31
-    range = 74
+    range = 120
     targets { "ground" }
     abilityType = "attack"
   }

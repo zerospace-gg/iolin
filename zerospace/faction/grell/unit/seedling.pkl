@@ -3,10 +3,13 @@ amends ".../engine/builder.pkl"
 name = "Seedling"
 domain = "ground"
 hp = 20
-speed = 180
+speed = 225 // 562 on biomass
+
 buildTime = 5
 
 infusable = true
+infuseCost = 2
+armorType = "medium"
 
 infuseRule = new {
   hp = 120

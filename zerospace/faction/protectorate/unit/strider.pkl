@@ -8,10 +8,10 @@ hexiteCost = 175
 fluxCost = 125
 supply = 6
 buildTime = 60
-hp = 1100
+hp = 1250
 armorType = "heavy"
-speed = 450
-armor = 1
+speed = 400
+infuseCost = 15
 
 carryCapacity = 8
 
@@ -24,7 +24,7 @@ abilities {
     damage = 12
     volleys = 5
     cooldown = 3
-    range = 1200
+    range = 300
     targets { "ground" }
     abilityType = "attack"
   }

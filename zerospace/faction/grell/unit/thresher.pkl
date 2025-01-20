@@ -4,13 +4,15 @@ name = "Thresher"
 hotkey = "s"
 tier = "T2.5"
 unitType = "army"
-hexiteCost = 150
-fluxCost = 150
+hexiteCost = 100
+fluxCost = 175
 buildTime = 50
 supply = 8
-hp = 350
+hp = 375
+armor = 1
 armorType = "heavy"
 speed = 450
+infuseCost = 15
 
 createdBy { import("../building/medium_incubator.pkl").slug }
 unlockedBy { import("../building/advanced_augmentation_pool.pkl").slug }

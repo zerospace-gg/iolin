@@ -9,7 +9,7 @@ stunResist = 50
 abilities {
   ["Sword Attack"] {
     damage = 23
-    cooldown = 1.1
+    cooldown = 1.2
     range = 150
     abilityType = "attack"
   }

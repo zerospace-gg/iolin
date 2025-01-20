@@ -6,7 +6,7 @@ tier = "T1"
 hexiteCost = 50
 fluxCost = 100
 buildCount = 8
-supply = 2
+supply = 1
 hp = 80
 speed = 650
 armorType = "light"
@@ -20,6 +20,8 @@ abilities {
     splashRange = 300
     targets { "ground" }
     abilityType = "attack"
+    bonusPercent = 100
+    bonusVsTags { "armor:light" }
   }
 }
 uuid = "92e6d4b9-621c-4859-a86a-4249e4dc6531"

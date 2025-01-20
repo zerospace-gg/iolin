@@ -10,6 +10,7 @@ unitType = "army"
 createdBy { import("../building/prot_barracks.pkl").slug }
 upgradedBy { import("../building/research_lab.pkl").slug }
 unlockedBy { import("../building/research_lab.pkl").slug }
+infuseCost = 3
 
 hp = 130
 armorType = "light"

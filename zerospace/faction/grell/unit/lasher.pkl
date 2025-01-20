@@ -11,7 +11,7 @@ buildTime = 20
 supply = 2
 hp = 200
 armorType = "light"
-speed = 475
+speed = 500
 
 createdBy { import("../building/incubator.pkl").slug }
 unlockedBy { import("../building/augmentation_pool.pkl").slug }
@@ -19,7 +19,7 @@ upgradedBy { import("../building/augmentation_pool.pkl").slug }
 
 abilities {
   ["Attack"] {
-    damage = 18
+    damage = 17
     cooldown = 1
     range = 775
     targets { "air"; "ground" }
@@ -37,7 +37,7 @@ abilities {
 
 upgrades {
   ["Attack Range"] {
-    tier = "T3.5"
+    tier = "T1.5"
     description = "Increase lasher attack range by 200"
     researchTime = 50
     fluxCost = 100
@@ -45,7 +45,7 @@ upgrades {
 
   ["Fast Legs"] {
     tier = "T1.5"
-    description = "Increase lasher movement speed by 30%"
+    description = "Increase lasher movement speed by 25%"
     researchTime = 50
     fluxCost = 100
   }
@@ -60,7 +60,7 @@ upgrades {
 
   ["Camouflage"] {
     tier = "T3.5"
-    description = "Unlocks the Camouflage ability (+75% movement speed for 3s)"
+    description = "Unlocks the Camouflage ability (+25% movement speed and cloak for 6s)"
     unlocks { me.abilities["Camouflage"].slug }
     researchTime = 60
     fluxCost = 150

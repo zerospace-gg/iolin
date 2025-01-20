@@ -7,10 +7,11 @@ buildCount = 2
 hexiteCost = 200
 fluxCost = 0
 supply = 3
-hp = 150
-shields = 150
+hp = 100
+shields = 200
 armorType = "medium"
 speed = 825
+infuseCost = 5
 abilities {
   ["Attack"] {
     damage = 11

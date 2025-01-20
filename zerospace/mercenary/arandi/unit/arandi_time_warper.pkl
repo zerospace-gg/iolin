@@ -10,6 +10,7 @@ supply = 6
 hp = 350
 armorType = "light"
 speed = 500
+infuseCost = 14
 
 
 abilities {

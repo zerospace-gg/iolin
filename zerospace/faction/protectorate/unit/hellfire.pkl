@@ -5,15 +5,16 @@ unitType = "army"
 tier = "T2.5"
 supply = 6
 hexiteCost = 150
-fluxCost = 125
+fluxCost = 100
 buildTime = 50
 createdBy { import("../building/factory.pkl").slug }
 upgradedBy { import("../building/mechanical_research_lab.pkl").slug }
 unlockedBy { import("../building/factory.pkl").slug }
 
-hp = 400
+hp = 425
 armorType = "medium"
 speed = 400
+infuseCost = 13
 
 abilities {
   ["Attack"] {

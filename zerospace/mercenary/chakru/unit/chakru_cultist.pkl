@@ -12,6 +12,7 @@ armorType = "light"
 speed = 500
 energy = 100
 startingEnergy = 50
+infuseCost = 8
 abilities {
   ["Acidic Throw"] {
     damage = 19

@@ -11,6 +11,8 @@ hp = 400
 armorType = "medium"
 speed = 600
 armor = 1
+buildTime = 40
+infuseCost = 16
 
 createdBy { import("../building/advanced_factory.pkl").slug }
 unlockedBy { import("../building/advanced_factory.pkl").slug }

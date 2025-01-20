@@ -9,6 +9,7 @@ fluxCost = 225
 supply = 7
 hp = 1000
 armorType = "heavy"
+infuseCost = 18
 abilities {
   ["Attack"] {
     damage = 100

@@ -9,7 +9,7 @@ fluxCost = 50
 supply = 3
 hp = 320
 armorType = "light"
-speed = 675
+speed = 750
 abilities {
   ["Attack"] {
     damage = 4

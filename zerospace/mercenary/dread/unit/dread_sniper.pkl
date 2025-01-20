@@ -5,19 +5,20 @@ unitType = "merc"
 tier = "T1"
 buildCount = 2
 hexiteCost = 75
-fluxCost = 225
+fluxCost = 200
 supply = 8
 hp = 125
 shields = 125
 armorType = "light"
-speed = 450
+speed = 500
+infuseCost = 8
 abilities {
   ["Attack"] {
     damage = 30
     bonusPercent = 75
-    bonusVsTags { "armor:light" }
+    bonusVsTags { "flyer" }
     cooldown = 2.2
-    range = 1500
+    range = 1750
     targets { "air"; "ground" }
     abilityType = "attack"
   }

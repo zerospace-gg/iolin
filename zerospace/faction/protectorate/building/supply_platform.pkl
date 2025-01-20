@@ -1,7 +1,7 @@
 amends ".../engine/supply_building.pkl"
 name = "Supply Platform"
-buildTime = 15
-hp = 750
+buildTime = 12
+hp = 700
 createdBy {
   import("../unit/prot_build_drone.pkl").slug
 }

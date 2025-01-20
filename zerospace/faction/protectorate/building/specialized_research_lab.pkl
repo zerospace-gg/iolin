@@ -4,6 +4,8 @@ shortName = "Spc. R. Lab"
 name = "Specialized Research Lab"
 tier = "T3.5"
 buildTime = 40
+hexiteCost = 100
+fluxCost = 75
 
 createdBy {
   import("../unit/prot_build_drone.pkl").slug

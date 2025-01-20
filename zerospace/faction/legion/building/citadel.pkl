@@ -1,5 +1,10 @@
 amends ".../engine/tech_building.pkl"
-name = "Warehouse"
+name = "Citadel"
+tier = "T2.5"
+hexiteCost = 125
+fluxCost = 50
+buildTime = 45
+hp = 2000
 
 createdBy {
   import("../unit/legion_build_drone.pkl").slug
@@ -8,7 +13,8 @@ createdBy {
 providesUpgradesFor {
   import("../unit/thrall.pkl").slug
   import("../unit/steelsworn.pkl").slug
+  import("../unit/dark_disciple.pkl").slug
   import("../unit/exalted.pkl").slug
-  import("../unit/radiant.pkl").slug
+  import("../unit/mammoth.pkl").slug
 }
 uuid = "2765bb2b-a3d5-4afb-a2d7-ab95c5011e65"

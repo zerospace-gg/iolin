@@ -4,9 +4,9 @@ tier = "T3.5"
 shortName = "Spc. Aug Pool"
 name = "Special Augmentation Pool"
 hp = 1000
-buildTime = 35
+buildTime = 40
 hexiteCost = 100
-fluxCost = 25
+fluxCost = 75
 
 providesUpgradesFor {
   import("../unit/reaver.pkl").slug

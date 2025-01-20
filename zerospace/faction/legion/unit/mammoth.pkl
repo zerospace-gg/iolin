@@ -1,0 +1,33 @@
+amends ".../engine/unit.pkl"
+
+name = "Mammoth"
+// hotkey = "e"
+unitType = "army"
+tier = "T2"
+hexiteCost = 150
+fluxCost = 100
+buildTime = 45
+supply = 8
+hp = 1000
+armorType = "medium"
+speed = 425
+vision = 1800
+infuseCost = 13
+
+createdBy { import("../building/beastiary.pkl").slug }
+unlockedBy { import("../building/citadel.pkl").slug }
+upgradedBy { import("../building/citadel.pkl").slug }
+
+abilities {
+  ["Attack"] {
+    damage = 120
+    cooldown = 4
+    range = 250
+    abilityType = "attack"
+    targets { "ground" }
+    bonusPercent = 100
+    bonusVsTags { "building" }
+  }
+}
+
+uuid = "86d4965a-0320-48d7-bc41-7343522ad7fb"
