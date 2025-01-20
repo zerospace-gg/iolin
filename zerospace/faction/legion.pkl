@@ -6,13 +6,14 @@ factionContents = import*("legion/**pkl")
 mercHeroesAllowed = false
 
 talents {
-  ["Value in Death"] {
+  ["War Experience"] {
     level = 1
-    description = "Dying Infrantry heal lowest nearby hero 25 Life & 5 Energy"
+    description = "Gain additional experience by destroying enemy units (20% of hex+flux cost) as XP"
   }
-  ["Reused Equipment"] {
+
+  ["Improved Conduits"] {
     level = 1
-    description = "Thralls refund 25% of their cost on death"
+    description = "Conduits now build instantly and start with max energy"
   }
 
   ["Efficient Upgrades"] {
@@ -20,16 +21,16 @@ talents {
     description = "+40% research speed & -40% research cost"
   }
 
-  ["Boosting Obelisk"] {
+  ["Death Pact"] {
     level = 3
-    description = "Unlocks Bosting Obelisk and increases Obelisk's range by 30%"
+    description = "Dark Blessing additional +50% Attack and Move Speed. Target dies upon expiring."
   }
-  ["Portal Obelisk"] {
+  ["Life Pact"] {
     level = 3
-    description = "Unlocks Portal Obelisk. +50% Obelisk Duration"
+    description = "Dark Blessing heals 50% of target's health while stunned."
   }
 
-  ["legion L4 talent - to be named"] {
+  ["Improved Spellcasting"] {
     level = 4
     description = "+50% Energy Regen & -30% Ability Cooldown"
   }
@@ -45,11 +46,6 @@ talents {
     description = "Spawn powerful defensive structure on battlefield"
     unlocks { me.topbars["Spawn Monolith"].slug }
   }
-
-  ["Advanced Production"] {
-    level = 6
-    description = "Reduce Cost of Thralls and Rhinos by 20%"
-  }
 }
 
 topbars {
@@ -60,11 +56,10 @@ topbars {
     cooldown = 90
     description = "Recalls units to the nearest Garrison Tower. Click minimap to choose which base."
   }
-  ["Spawn Obelisk"] {
+  ["Dark Blessing"] {
     topbarType = "special"
     slot = 2
-    energyCost = 12
-    description = "Spawn various obelisks on the battlefield (See Legion Buildings)"
+    description = "Target unit gains +70% attack and move speed for 15s. Upon expiration the unit is stunned for 5s. Lasts 50% longer when cast near Monolith."
   }
   ["Ritual"] {
     slot = 3

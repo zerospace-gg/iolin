@@ -35,26 +35,25 @@ abilities {
 }
 
 upgrades {
-
-  ["High Power Jetpacks"] {
-    description = "+25% health. knockback enemies on death."
+  ["Commando Speed"] {
+    description = "Increases move speed by +100"
     tier = "T1.5"
-    fluxCost = 75
-    researchTime = 40
+    fluxCost = 100
+    researchTime = 45
+  }
+
+  ["Improved Rifles"] {
+    description = "Increases range by +200"
+    tier = "T1.5"
+    fluxCost = 100
+    researchTime = 45
   }
 
   ["Shredding Rounds"] {
     description = "Each hit causes target to take 2% more damage for 8s"
     tier = "T2.5"
     fluxCost = 150
-    researchTime = 50
-  }
-
-  ["Improved Rifles"] {
-    description = "Increases range by +200"
-    tier = "T2.5"
-    fluxCost = 125
-    researchTime = 45
+    researchTime = 60
   }
 
   ["Eagle Sense"] {

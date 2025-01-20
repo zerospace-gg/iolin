@@ -27,26 +27,27 @@ abilities {
     abilityType = "attack"
     targets { "ground" }
   }
-  ["Flare"] {
-    cooldown = 30
-    range = 4000
-    // radius = 2000
-    duration = 12
-    abilityType = "spell"
-    description = "Reveals target area (2000 radius) for 12 seconds."
-  }
+
+  // ["Flare"] {
+  //   cooldown = 30
+  //   range = 4000
+  //   // radius = 2000
+  //   duration = 12
+  //   abilityType = "spell"
+  //   description = "Reveals target area (2000 radius) for 12 seconds."
+  // }
 }
 
 upgrades {
-  ["Flare"] {
-    description = "Unlocks the flare ability. Reveals target area for 12 seconds."
+  ["Siege Mode"] {
+    description = "Unlocks the siege ability. Increases the range of the hellfire by 40%. Cannot move while sieged."
     tier = "T2.5"
-    fluxCost = 50
-    researchTime = 30
+    fluxCost = 100
+    researchTime = 50
   }
 
   ["Resonant Missiles"] {
-    description = "+50% missile speed, +10% more missiles (13 volleys instead of 6)"
+    description = "+50% missile speed, +15% more missiles"
     tier = "T3.5"
     fluxCost = 150
     researchTime = 60

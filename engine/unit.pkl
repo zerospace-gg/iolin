@@ -94,6 +94,15 @@ hidden fixed doubleInfusedForm: me? =
       tags { "infused"; "double-infused" }
   }
 
+darkBlessingCost: Number? =
+  if (!infusable)
+    null
+  else
+    let (h = (hexiteCost ?? 0))
+    let (f = (fluxCost ?? 0) * 1.25)
+    let (n = (h + f) * 0.0675)
+    (n * 10).round() / 10
+
 infuseCost: Number? =
   if (!infusable)
     null
@@ -119,7 +128,6 @@ hidden upgrades: Mapping<String, UnitUpgrade> = new Mapping<String, UnitUpgrade>
 upgrade: Mapping<String, UnitUpgrade> = new {
   for (u in upgrades) { [u.slug] = u }
 }
-
 
 hidden fixed children = super.children +
   upgrades.toMap().values.toList() +

@@ -31,7 +31,7 @@ abilities {
     energyCost = 25
     energyType = "classic"
     cooldown = 10
-    description = "Target a friendly Thrall or an enemy unit. Enemy unit will take 75 damage and be slowed for 4s. Friendly thrall will get sacrificied and heal friendly units for 300 HP over 30s. Double-clicking ability picks a thrall with the lowest health."
+    description = "Choose one: Deals 80 damage and slows an enemy unit for 5 seconds OR Sacrifices a friendly Thrall, healing nearby units for 15 seconds."
     abilityType = "spell"
   }
 }
@@ -41,40 +41,26 @@ upgrades {
     description = "Sacrificial Spear releases lightning upon impact, dealing 40 damage and slowing 4 nearby enemies."
     fluxCost = 125
     researchTime = 40
-    tier = "T1.5"
+    tier = "T2.5"
   }
   ["Improved Sacrifice"] {
-    description = "+40% damage and slow duration of sacrificial spear. +40% radius and duration for sacrificial site."
+    description = "Doubles heal radius and rate of healing for Sacrificial Spear."
     fluxCost = 125
     researchTime = 40
-    tier = "T1.5"
+    tier = "T2.5"
   }
 
   ["Burning Fireball"] {
     description = "Fireball explodes when it reaches the target setting the ground on fire."
     fluxCost = 175
-    researchTime = 50
+    researchTime = 55
     tier = "T2.5"
   }
-  ["Lightning Rod"] {
-    description = "Sacrificial Site strikes an enemy with lightning when a friendly infantry unit dies in radius. +300% sacrificial site health."
-    fluxCost = 150
-    researchTime = 50
+  ["Fast Fireball"] {
+    description = "Increases fireball speed by 75%"
+    fluxCost = 175
+    researchTime = 55
     tier = "T2.5"
-  }
-
-  ["From Ashes"] {
-    description = "When a hero dies nearby, revive them at 50% vitality. 90s cooldown."
-    fluxCost = 200
-    researchTime = 60
-    // cooldown = 90
-    tier = "T3.5"
-  }
-  ["Storm"] {
-    description = "Creates a lightning storm upon attacking. 20s cooldown, 15s duration."
-    fluxCost = 225
-    researchTime = 60
-    tier = "T3.5"
   }
 }
 uuid = "11ed3f29-7fce-4882-86c4-9207b2f27b56"

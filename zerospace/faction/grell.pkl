@@ -13,7 +13,7 @@ mercHeroesAllowed = true
 talents {
   ["Bio Nourishment"] {
     level = 1
-    description = "+50% healing & life regeneration"
+    description = "+30% healing & life regeneration"
   }
 
   ["Cultivator Range"] {
@@ -28,12 +28,12 @@ talents {
 
   ["Battle Infusion"] {
     level = 3
-    description = "4x faster infuse. +40% Attack and Move Speed for 15s"
+    description = "4x faster infuse. +40% Attack and Move Speed for 10s"
   }
 
   ["Improved Infusion"] {
     level = 3
-    description = "+200 Range for infused ranged Units. +$20% health for infused melee units."
+    description = "+200 Range for infused ranged Units. +20% health for infused melee units."
   }
 
   ["Improved Speed"] {
@@ -50,11 +50,6 @@ talents {
   ["Tree of Life"] {
     level = 5
     description = "Unlocks the \(me.topbars["Tree of Life"].name) Topbar Power: \(me.topbars["Tree of Life"].description)"
-  }
-
-  ["Infuse Up"] {
-    level = 6
-    description = "Units can be infused a second time"
   }
 }
 

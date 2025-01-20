@@ -40,7 +40,7 @@ upgrades {
 
   ["Suicide"] {
     tier = "T3.5"
-    description = "Suicide itself on enemy air units dealing 150 damage + 50% area damage"
+    description = "Suicide itself on enemy air units dealing 200 damage +50 damage to nearby units (25% splash)"
     fluxCost = 100
     researchTime = 50
   }

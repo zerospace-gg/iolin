@@ -53,7 +53,7 @@ upgrades {
 
   ["Toughened Carapace"] {
     tier = "T3.5"
-    description = "+15% Health +1 armor"
+    description = "+3 armor"
     fluxCost = 100
     researchTime = 50
   }

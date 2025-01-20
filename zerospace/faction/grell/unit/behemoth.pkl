@@ -36,9 +36,9 @@ abilities {
 }
 
 upgrades {
-  ["Attack Speed"] {
+  ["Behemoth Speed"] {
     tier = "T3.5"
-    description = "+40% attack speed"
+    description = "+25% move speed"
     fluxCost = 100
     researchTime = 50
   }

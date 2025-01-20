@@ -43,11 +43,11 @@ upgrades {
     fluxCost = 0
     researchTime = 20
   }
-  ["Bunker Capacity"] {
+  ["Field Deployment"] {
+    researchTime = 20
+    fluxCost = 0
     tier = "T3.5"
-    description = "+100% carry capacity"
-    fluxCost = 100
-    researchTime = 50
+    description = "Reinforcements can now be used near striders"
   }
 }
 uuid = "a505b1a1-2a65-4e4b-b334-e655c2c58b43"

@@ -29,12 +29,12 @@ abilities {
 
   ["Eruption"] {
     name = "Eruption"
-    description = "Deals 120 damage to units in the target area after 1.5 seconds"
+    description = "Deals 120 damage to units in the target area after 1.5 seconds. Heals 25% per unit."
     targets { "air"; "ground"  }
     targetMode = "location"
     hotkey = "e"
     energyType = "health"
-    energyCost = 8
+    energyCost = 120
     delay = 1.5
     areaDamage = 120
     areaRange = 100
@@ -44,25 +44,32 @@ abilities {
 }
 
 upgrades {
-  ["Shredding Eruption"] {
+  ["Harbinger Armor"] {
     tier = "T2.5"
-    description = "Augments Eruption: Affected units take 20% additional damage for 8 seconds. Stacks up to 5 times."
-    researchTime = 50
-    fluxCost = 100
-  }
-
-  ["Rapid Regeneration"] {
-    tier = "T2.5"
-    description = "2% of health regenerated each second"
-    researchTime = 60
     fluxCost = 150
+    researchTime = 50
+    description = "+2 armor"
   }
 
-  ["Wide Eruption"] {
+  ["Harbinger Speed"] {
     tier = "T2.5"
+    fluxCost = 150
+    researchTime = 50
+    description = "+200 move speed"
+  }
+
+  ["Eruption Radius"] {
+    tier = "T3.5"
     description = "Increases the radius of eruption by 50%"
     researchTime = 60
     fluxCost = 150
+  }
+
+  ["Eruption Cost"] {
+    tier = "T3.5"
+    researchTime = 60
+    fluxCost = 200
+    description = "Reduces Eruption HP Cost by 60"
   }
 }
 uuid = "ea9c4201-f6df-47b8-b54e-732b03a5daab"

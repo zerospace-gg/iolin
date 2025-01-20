@@ -40,7 +40,7 @@ upgrades {
   }
 
   ["Slow"] {
-    description = "Attacks reduce movement speed by 30%"
+    description = "Attacks reduce movement speed by 20%"
     fluxCost = 100
     researchTime = 50
     tier = "T3.5"

@@ -24,56 +24,46 @@ abilities {
     energyCost = 30
     energyType = "classic"
     cooldown = 8
-    description = "Deals 75 damage in a linear area"
+    description = "Deals 60 damage in a linear area"
     abilityType = "spell"
   }
-  ["Toxic Ammunition"] {
+  ["Speedburst"] {
     hotkey = "r"
-    energyCost = 25
+    energyCost = 15
     energyType = "classic"
-    cooldown = 10
-    description = "Equips toxic ammunition, causing attacked units to take 30% additional damage and move 20% slower for 3s. Lasts 10 seconds."
+    cooldown = 20
+    description = "Kraegar and Sabretooth gain increased movement speed for 10s"
     abilityType = "spell"
   }
 }
 
 upgrades {
-  ["Killer Instinct"] {
-    description = "Hitting enemy units with Piercing shots boosts hero's attack (35%) and movement speed (10%) for 6s."
+  ["Speedburst Upgrade"] {
+    description = "Speedburst applies buff to all friendly units around Kraegar"
     fluxCost = 125
     researchTime = 40
-    tier = "T1.5"
-  }
-  ["Stronger Toxins"] {
-    description = "Increase Toxic Ammunition slow and damage multiplier by 20%"
-    fluxCost = 125
-    researchTime = 40
-    tier = "T1.5"
+    tier = "T2.5"
   }
 
-  ["Piercing Shot Slow"] {
-    description = "Units hit by piercing shot are slowed (-50% for 4s)"
-    fluxCost = 175
-    researchTime = 50
+  ["More Feed"] {
+    description = "Increases max feed count on Sabretooth to 30. Feed bonuses doubled."
+    fluxCost = 125
+    researchTime = 40
     tier = "T2.5"
   }
-  ["Attack Range Aura"] {
-    description = "Increasess attack range of nearby ranged units by 300"
-    fluxCost = 175
-    researchTime = 50
-    tier = "T2.5"
-  }
+
 
   ["Explosive Warhead"] {
     description = "The piercing shot explodes at the end dealing 300 damage in area. Handling such heavy ammo increases cooldown and channel time"
-    fluxCost = 225
-    researchTime = 50
+    fluxCost = 175
+    researchTime = 55
     tier = "T3.5"
   }
-  ["Multishot"] {
-    description = "Weapon fires 2 additional projectiles at nearby enemies"
-    fluxCost = 225
-    researchTime = 50
+
+  ["Killer Instinct"] {
+    description = "Each enemy hit with Piercing shots boosts Kraegar and Sabretooth's attack speed by 35% and movement speed by 10%, Lasts 6 seconds"
+    fluxCost = 175
+    researchTime = 55
     tier = "T3.5"
   }
 }

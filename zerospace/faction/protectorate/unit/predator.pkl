@@ -26,7 +26,7 @@ abilities {
   }
 
   ["Lay Mine"] {
-    description = "Lay a mine which deals 30 damage and slows enemies upon contact"
+    description = "Lay a chaser mine (50hp, cloaked, deals 50 dmg when an enemy gets close)"
     cooldown = 120
     abilityType = "spell"
   }
@@ -42,7 +42,7 @@ upgrades {
   }
 
   ["Piercing Bolt"] {
-    description = "The Predator's cannon will periodically shoot a projectile reducing enemy health by 20%."
+    description = "The Predator's cannon will periodically shoot a projectile reducing enemy health by 10%."
     tier = "T3.5"
     fluxCost = 150
     researchTime = 60

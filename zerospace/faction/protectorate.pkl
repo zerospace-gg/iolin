@@ -9,7 +9,7 @@ talents {
     level = 1
     description = "-25% Beam up delay, +100% healed amount. Adds 10 max charges."
   }
-  ["Veterancy"] {
+  ["Improved Veterancy"] {
     level = 1
     description = "+25% faster veterancy gain. Enables Veterancy gain for Heroes."
   }
@@ -41,11 +41,6 @@ talents {
     level = 5
     description = "Calls down a temporary Mech. Explodes on death dealing massive damage."
     creates { import("protectorate/unit/weapon_x.pkl").slug }
-  }
-
-  ["Hot Landing Zone"] {
-    level = 6
-    description = "Reinforcements can also be cast near friendly Heroes"
   }
 }
 

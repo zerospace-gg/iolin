@@ -13,7 +13,7 @@ talents {
 
   ["Lifesteal"] {
     level = 4
-    description = "+2 Armor and +15% lifesteal"
+    description = "+1 Armor and +15% lifesteal"
   }
 }
 

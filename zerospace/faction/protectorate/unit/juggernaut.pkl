@@ -44,7 +44,7 @@ upgrades {
     researchTime = 50
     tier = "T3.5"
   }
-  ["Heat Discharge Radius"] {
+  ["Uncontrolled Heat"] {
     tier = "T3.5"
     fluxCost = 150
     researchTime = 50

@@ -33,13 +33,6 @@ abilities {
 }
 
 upgrades {
-  ["Fragmentation Shells"] {
-    description = "Weapons deal full damage in splash radius"
-    tier = "T1.5"
-    fluxCost = 100
-    researchTime = 50
-  }
-
   ["Reactive Armor"] {
     description = "+25% health and +1 armor"
     tier = "T1.5"

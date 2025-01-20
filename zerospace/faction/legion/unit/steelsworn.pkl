@@ -42,9 +42,9 @@ upgrades {
     tier = "T1.5"
   }
   ["Performance Enhancers"] {
-    description = "+25% Attack and Move Speed"
-    fluxCost = 250
-    researchTime = 60
+    description = "+15% Attack and Move Speed"
+    fluxCost = 150
+    researchTime = 50
     tier = "T2.5"
   }
 }
