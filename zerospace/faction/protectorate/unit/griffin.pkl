@@ -37,7 +37,7 @@ abilities {
   }
 
   ["EMP"] {
-    description = "Drain 50 energy and knockback and breifly slow enemy units. 220 radius effect"
+    description = "Drain 50 energy and knockback and breifly slow enemy units. 220 radius effect, 80% slower"
     energyCost = 75
     energyType = "classic"
     // radius = 220

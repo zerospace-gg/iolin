@@ -12,7 +12,7 @@ hp = 1250
 armorType = "heavy"
 speed = 400
 infuseCost = 15
-
+stunResist = 50
 carryCapacity = 8
 
 createdBy { import("../building/advanced_factory.pkl").slug }

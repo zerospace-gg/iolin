@@ -38,7 +38,7 @@ abilities {
     delay = 1.5
     areaDamage = 120
     areaRange = 100
-    range = 1400
+    range = 1500
     abilityType = "spell"
   }
 }

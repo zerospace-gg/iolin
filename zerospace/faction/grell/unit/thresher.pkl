@@ -51,7 +51,7 @@ upgrades {
 
   ["Limb Augmentation"] {
     tier = "T3.5"
-    description = "Sieging and unsieging is 50% faster (0.625s)"
+    description = "Sieging and unsieging is 50% faster (0.625s), +20% movement speed"
     fluxCost = 100
     researchTime = 50
   }

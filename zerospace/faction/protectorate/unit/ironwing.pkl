@@ -40,14 +40,14 @@ upgrades {
   ["Anti-Armor Missile"] {
     description = "Unlocks the Anti-Armor Missile ability"
     tier = "T2.5"
-    fluxCost = 125
+    fluxCost = 100
     researchTime = 40
   }
 
   ["Bonus Shield"] {
     description = "Gain +125 shields"
     tier = "T2.5"
-    fluxCost = 125
+    fluxCost = 100
     researchTime = 50
   }
 

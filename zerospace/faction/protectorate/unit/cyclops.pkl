@@ -8,7 +8,7 @@ hexiteCost = 100
 fluxCost = 175
 supply = 6
 buildTime = 45
-hp = 450
+hp = 425
 armorType = "heavy"
 speed = 550
 infuseCost = 4
@@ -24,8 +24,8 @@ abilities {
     bonusVsTags { "armor:heavy" }
     cooldown = 0.4
     range = 1300
-    chargeTime = 1.2
-    chargeMaxMultiplier = 1.6
+    chargeTime = 6
+    chargeMaxMultiplier = 3
     targets { "air"; "ground" }
     abilityType = "attack"
   }

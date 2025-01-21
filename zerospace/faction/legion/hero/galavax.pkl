@@ -23,7 +23,7 @@ abilities {
     energyCost = 40
     energyType = "classic"
     cooldown = 15
-    description = "Hurl a fireball which slowly moves across battlefield and burns enemy units and structures"
+    description = "Hurl a fireball which slowly moves across battlefield and burns enemy units and structures. 100 damage the first time it hits a unit, 20 damage per tick after."
     abilityType = "spell"
   }
   ["Sacrificial Spear"] {

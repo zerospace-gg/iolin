@@ -21,7 +21,7 @@ abilities {
   ["G53 Light Flamethrower"] {
     damage = 5
     volleys = 2
-    cooldown = 0.96
+    cooldown = 1.1
     range = 500
     bonusVsTags { "armor:light" }
     bonusPercent = 75
@@ -41,7 +41,7 @@ upgrades {
   }
 
   ["Kinetic Mode"] {
-    description = "Gains +40% movement speed outside of combat"
+    description = "Gains +40% movement speed outside of combat. 5s delay after last combat."
     tier = "T2.5"
     fluxCost = 150
     researchTime = 60

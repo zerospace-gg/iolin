@@ -1,7 +1,7 @@
 extends "building.pkl"
 
 buildingType = "extractor"
-hp = 300
+hp = 225
 armor = 0
 buildTime = 35
 gathersHexite = 1.4

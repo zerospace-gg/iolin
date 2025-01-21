@@ -23,7 +23,7 @@ abilities {
     damage = 6
     volleys = 2
     shots = 2
-    cooldown = 1
+    cooldown = 0.9
     range = 1000
     abilityType = "attack"
   }

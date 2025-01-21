@@ -7,8 +7,8 @@ speed = 450
 hexiteCost = 75
 supply = 0
 maxOwned = 15
-gathersFlux = 0.6
-gathersRichFlux = 1.2
+gathersFlux = 0.7
+gathersRichFlux = 1.4
 
 abilities {
   ["Heal"] {
