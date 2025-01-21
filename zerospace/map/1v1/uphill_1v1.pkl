@@ -1,0 +1,6 @@
+amends ".../engine/rts_map.pkl"
+name = "Uphill 1v1"
+shortName = "Uphill"
+mapSize = "small"
+xpTowers = 2
+fluxDistance = "distant"

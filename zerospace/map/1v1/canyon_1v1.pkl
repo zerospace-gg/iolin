@@ -1,0 +1,6 @@
+amends ".../engine/rts_map.pkl"
+name = "Canyon 1v1"
+shortName = "Canyon"
+mapSize = "normal"
+xpTowers = 3
+fluxDistance = "near"
