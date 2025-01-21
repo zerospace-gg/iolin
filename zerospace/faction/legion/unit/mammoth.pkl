@@ -30,7 +30,7 @@ abilities {
   }
 
   ["Thrall Rider"] {
-    description = "A Thrall, Steelsworn, or Dark Disciple may ride the Mammoth. Bonuses: Mounted Thrall has +100% attack speed. Mounted Steelsworn gives +1 armor to the Mammoth. Mounted Dark Disciple gives the Mammoth 40 area damage in its attack."
+    description = "A Thrall, Steelsworn, or Dark Disciple may ride the Mammoth. Bonuses: Mounted Thrall has +100% attack speed. Mounted Steelsworn gives +2 armor to the Mammoth. Mounted Dark Disciple gives the Mammoth 40 area damage in its attack."
     abilityType = "passive"
   }
 }
