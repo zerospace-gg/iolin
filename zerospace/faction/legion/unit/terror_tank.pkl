@@ -7,7 +7,7 @@ name = "Terror Tank"
 unitType = "army"
 tier = "T3"
 
-// tags { "massive" }
+tags { "massive" }
 
 hexiteCost = 200
 fluxCost = 200

@@ -5,14 +5,14 @@ hotkey = "t"
 tier = "T2.5"
 unitType = "army"
 hexiteCost = 50
-fluxCost = 25
+fluxCost = 100
 buildTime = 16
+buildCount = 4
 domain = "air"
-supply = 2
-hp = 140
+supply = 1
+hp = 60
 armorType = "light"
-speed = 700
-vision = 1400
+speed = 800
 
 createdBy { import("../building/incubator.pkl").slug }
 unlockedBy { import("../building/skrelling_nest.pkl").slug }

@@ -12,7 +12,7 @@ hp = 1000
 armorType = "heavy"
 speed = 475
 armor = 1
-energy = 20
+energy = 7
 
 createdBy { import("../building/advanced_factory.pkl").slug }
 unlockedBy { import("../building/advanced_factory.pkl").slug }
@@ -21,15 +21,17 @@ upgradedBy { import("../building/specialized_research_lab.pkl").slug }
 abilities {
   ["Attack"] {
     damage = 42
-    cooldown = 1.2
-    range = 1100
+    cooldown = 2.4
+    range = 700
+    bonusPercent = 100
+    bonusVsTags { "massive" }
     targets { "ground" }
     abilityType = "attack"
   }
 
   ["Heat Discharge"] {
     description = "deals 250 damage to nearby enemies over 5 seconds. cannot move while active. 200 radius"
-    energyCost = 20
+    energyCost = 7
     energyType = "abes"
     damage = 250
     // radius = 200

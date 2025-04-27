@@ -23,11 +23,12 @@ talents {
 
   ["Death Pact"] {
     level = 3
-    description = "Dark Blessing additional +50% Attack and Move Speed. Target dies upon expiring."
+    description = "Reanimate bonuses increased by 50%"
   }
-  ["Life Pact"] {
+
+  ["Reanimate Hero"] {
     level = 3
-    description = "Dark Blessing heals 50% of target's health while stunned."
+    description = "Reanimate can target Heroes, debuffing them for 15s upon reanimation."
   }
 
   ["Improved Spellcasting"] {
@@ -56,10 +57,10 @@ topbars {
     cooldown = 90
     description = "Recalls units to the nearest Garrison Tower. Click minimap to choose which base."
   }
-  ["Dark Blessing"] {
+  ["Reanimate"] {
     topbarType = "special"
     slot = 2
-    description = "Target unit gains +70% attack and move speed for 15s. Upon expiration the unit is stunned for 5s. Lasts 50% longer when cast near Monolith."
+    description = "Target unit gains +40% attack and move speed. After death, unit is reanimated with -40% attack speed and move speed."
   }
   ["Ritual"] {
     slot = 3

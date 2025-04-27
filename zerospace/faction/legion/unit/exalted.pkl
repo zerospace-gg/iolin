@@ -18,24 +18,27 @@ upgradedBy { import("../building/citadel.pkl").slug }
 
 abilities {
   ["Spear Throw"] {
-    damage = 24
+    damage = 20
     cooldown = 1.9
     range = 500
+    bonusPercent = 50
+    bonusVsTags { "armor:heavy" }
     abilityType = "attack"
     targets { "air"; "ground" }
   }
 
-  ["Ensnare"] {
+  ["Maul"] {
     description = "Immobilizes target for 5 seconds"
     abilityType = "spell"
     targets { "air"; "ground" }
-    cooldown = 15
+    energyCost = 10
+    energyType = "classic"
   }
 }
 
 upgrades {
-  ["Ensnare"] {
-    description = "Unlocks the Ensnare ability"
+  ["Maul"] {
+    description = "Unlocks the Maul ability"
     fluxCost = 100
     researchTime = 50
     tier = "T1.5"

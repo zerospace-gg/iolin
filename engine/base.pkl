@@ -2,7 +2,7 @@ extends "building.pkl"
 
 buildingType = "base"
 hp = 2000
-hexiteCost = 350
+hexiteCost = 400
 tier = "T0"
 buildTime = 60
 armor = 1

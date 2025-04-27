@@ -5,6 +5,11 @@ description = "The Grell harvester generates BioMass while it is not moving, and
 providesBiomass = 375
 creates { import("../building/cultivator.pkl").slug }
 createdBy { import("../building/root_colony.pkl").slug }
+maxOwned = 10
+hp = 275
+hexiteCost = 100
+gathersFlux = 1
+gathersRichFlux = 2
 
 abilities {
   ["Spawn Cultivator"] {

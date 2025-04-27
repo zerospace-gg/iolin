@@ -12,19 +12,19 @@ createdBy { import("../building/prot_barracks.pkl").slug }
 upgradedBy { import("../building/research_lab.pkl").slug }
 unlockedBy { import("../building/research_lab.pkl").slug }
 
-hp = 300
+hp = 200
 armorType = "medium"
-speed = 500
+speed = 540
 infuseCost = 4
 
 abilities {
   ["G53 Light Flamethrower"] {
-    damage = 5
+    damage = 8
     volleys = 2
-    cooldown = 1.1
+    cooldown = 1.5
     range = 500
     bonusVsTags { "armor:light" }
-    bonusPercent = 75
+    bonusPercent = 100
     splashPercent = 30
     splashRange = 100
     abilityType = "attack"

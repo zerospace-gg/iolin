@@ -8,9 +8,9 @@ hexiteCost = 50
 buildTime = 18
 supply = 1
 buildCount = 2
-hp = 110
+hp = 90
 armorType = "light"
-speed = 650
+speed = 700
 createdBy { import("../building/incubator.pkl").slug }
 unlockedBy { import("../building/incubator.pkl").slug }
 upgradedBy { import("../building/augmentation_pool.pkl").slug }
@@ -27,16 +27,30 @@ abilities {
 }
 
 upgrades {
+  ["Fast Legs"] {
+    description = "Increase Stinger movement speed by 30%"
+    tier = "T1.5"
+    fluxCost = 70
+    researchTime = 40
+  }
+
+  ["Raptor"] {
+    description = "On biomass gain stealth and +50% attack speed"
+    tier = "T2.5"
+    fluxCost = 100
+    researchTime = 45
+  }
+
   ["Cliff Jumping"] {
     description = "Stingers can jump up and down normal cliffs. +20% movement speed."
-    tier = "T1.5"
+    tier = "T2.5"
     fluxCost = 100
     researchTime = 45
   }
 
   ["Poison Sting"] {
     description = "Attacks deal 6 dps and slows move speed by 25%. Lasts for 5 seconds."
-    tier = "T2.5"
+    tier = "T3.5"
     fluxCost = 125
     researchTime = 60
   }
