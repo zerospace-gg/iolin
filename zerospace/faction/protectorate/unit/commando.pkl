@@ -12,9 +12,9 @@ upgradedBy { import("../building/research_lab.pkl").slug }
 unlockedBy { import("../building/research_lab.pkl").slug }
 infuseCost = 3
 
-hp = 130
+hp = 140
 armorType = "light"
-speed = 520
+speed = 550
 
 abilities {
   ["S-10 Combat Rifle"] {

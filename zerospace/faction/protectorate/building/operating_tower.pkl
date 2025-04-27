@@ -17,12 +17,13 @@ addOns {
     hotkey = "e"
     hexiteCost = 200
     buildTime = 5
+    hp = 500
     addOnType = "building-turret"
     abilities {
       ["Attack"] {
-        damage = 20
-        cooldown = 0.39
-        range = 2000
+        damage = 16
+        cooldown = 0.45
+        range = 1950
         abilityType = "attack"
       }
     }

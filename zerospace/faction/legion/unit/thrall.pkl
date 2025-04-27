@@ -6,10 +6,10 @@ hotkey = "q"
 tier = "T1"
 unitType = "army"
 hexiteCost = 50
-buildTime = 24
+buildTime = 18
 supply = 1
-buildCount = 2
-hp = 100
+buildCount = 3
+hp = 80
 armorType = "light"
 speed = 525
 createdBy { import("../building/legion_barracks.pkl").slug }
@@ -23,7 +23,7 @@ tags {
 abilities {
   ["Attack"] {
     damage = 7
-    cooldown = 0.85
+    cooldown = 1.5
     range = 750
     abilityType = "attack"
     targets { "air"; "ground" }

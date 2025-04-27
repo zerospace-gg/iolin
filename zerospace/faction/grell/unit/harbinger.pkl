@@ -8,7 +8,7 @@ hexiteCost = 75
 fluxCost = 50
 buildTime = 26
 supply = 4
-hp = 420
+hp = 500
 armorType = "heavy"
 armor = 1
 speed = 425
@@ -21,10 +21,12 @@ upgradedBy { import("../building/advanced_augmentation_pool.pkl").slug }
 abilities {
   ["Acidic Spit"] {
     damage = 27
-    range = 400
+    range = 450
     cooldown = 2
     targets { "ground"; "air" }
     abilityType = "attack"
+    bonusPercent = 50
+    bonusVsTags { "armor:heavy" }
   }
 
   ["Eruption"] {
@@ -34,9 +36,9 @@ abilities {
     targetMode = "location"
     hotkey = "e"
     energyType = "health"
-    energyCost = 120
+    energyCost = 100
     delay = 1.5
-    areaDamage = 120
+    areaDamage = 150
     areaRange = 100
     range = 1500
     abilityType = "spell"

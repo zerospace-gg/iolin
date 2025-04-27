@@ -19,11 +19,11 @@ upgradedBy { import("../building/special_augmentation_pool.pkl").slug }
 
 abilities {
   ["Attack"] {
-    damage = 30
-    bonusPercent = 100
+    damage = 12
+    bonusPercent = 200
     bonusVsTags { "armor:heavy" }
     cooldown = 2.5
-    range = 1400
+    range = 1200
     targets { "ground" }
     abilityType = "attack"
   }
@@ -32,6 +32,13 @@ abilities {
     hotkey = "m"
     description = "Sacrifices itself, healing nearby units and damaging enemies. Autocast on death."
     abilityType = "spell"
+  }
+
+  ["Gain Flight"] {
+    abilityType = "passive"
+    energyCost = 5
+    energyType = "abes"
+    description = "Behemoth gets +37 dmg (45 total, 18 DPS), grows wings, and becomes a flying unit"
   }
 }
 

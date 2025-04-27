@@ -9,7 +9,7 @@ hexiteCost = 50
 fluxCost = 25
 buildTime = 20
 supply = 2
-hp = 200
+hp = 150
 armorType = "light"
 speed = 500
 
@@ -19,8 +19,8 @@ upgradedBy { import("../building/augmentation_pool.pkl").slug }
 
 abilities {
   ["Attack"] {
-    damage = 17
-    cooldown = 1
+    damage = 20
+    cooldown = 1.1
     range = 775
     targets { "air"; "ground" }
     abilityType = "attack"

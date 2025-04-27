@@ -34,6 +34,14 @@ abilities {
     description = "0.2s cooldown. unload troops in targeted area"
     abilityType = "spell"
   }
+
+  ["Siege Mode"] {
+    abilityType = "toggle"
+    togglesMode = "siege"
+    hotkey = "p"
+    reverseHotKey = "ctrl-p"
+    description = "Enables siege mode. Grants +1 armor, +1 damage, and +1 range to nearby units. Can siege nearby."
+  }
 }
 
 upgrades {
