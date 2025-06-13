@@ -1,4 +1,4 @@
-# Makefile for pkl project build system
+# Makefile for iolin build system
 #
 # This Makefile provides a complete build system for the pkl project with two main modes:
 #
@@ -27,19 +27,19 @@
 #
 # DEPENDENCIES:
 #   - pkl: PKL language runtime
-#   - jq: JSON processor for version extraction
+#   - jq: JSON processor for build reports
 #   - standard Unix tools: date, find, etc.
 #
 # VERSION MANAGEMENT:
 #   - zs_version: Defined in version.pkl and imported by versioning.pkl
-#   - gg_version: Extracted from package.json using jq
+#   - gg_version: Extracted from PklProject package.version using pkl
 #   - Timestamps: Generated using date command at build time for production builds
 
 # Default distribution directory
 DIST_DIR ?= dev-dist
 
-# Version extraction from package.json using jq (for gg_version)
-GG_VERSION := $(shell jq -r '.version' package.json)
+# Version extraction from PklProject package block using pkl (for gg_version)
+GG_VERSION := $(shell pkl eval -x package.version PklProject)
 
 # Timestamp variables
 AT := $(shell date -Iseconds)
