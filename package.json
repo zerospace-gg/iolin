@@ -1,6 +1,6 @@
 {
-  "name": "zsgg-public-library",
-  "version": "1.0.0",
+  "name": "gg-iolin-helpers",
+  "version": "0.0.0",
   "description": "Helping to educate the Orion sector",
   "main": "index.js",
   "private": true,
@@ -11,14 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kmariappan/strapi-client-js": "^1.4.0",
-    "@pkl-community/pkl-typescript": "^0.0.14",
     "@types/node": "^20.12.7",
-    "dotenv": "^16.4.5",
-    "qs": "^6.12.0",
-    "tsx": "^4.7.2"
-  },
-  "devDependencies": {
     "prettier": "^3.0.0"
   }
 }

@@ -3,6 +3,6 @@ import "../PklProject"
 
 zsVersion: String = version.zsVersion
 ggVersion: String = read?("prop:gg_version") ?? read?("env:ZSGG_VERSION") ?? PklProject.package.version
-ggUpdated: String = read?("prop:gg_at") ?? read?("env:ZSGG_AT") ?? "june 1987"
+ggUpdated: String = read?("prop:gg_at") ?? read?("env:ZSGG_AT") ?? "june-1987"
 ggEpoch: String = read?("prop:gg_ts") ?? read?("env:ZSGG_TS") ?? "123"
-ggRelease: String = List(ggVersion, "zs\(zsVersion)", ggEpoch).join("-")
+ggRelease: String = List(ggVersion, zsVersion, ggEpoch).join("-")
