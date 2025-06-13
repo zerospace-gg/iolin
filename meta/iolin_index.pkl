@@ -2,6 +2,9 @@ import "all.pkl" as $a
 import "tags.pkl" as $tags
 import ".../engine/entity.pkl" as Entity
 
+/// JSON indentation parameter - defaults to compact output, can be set to "  " for pretty print
+hidden gg_indent: String = ""
+
 local function find(f: (Entity) -> Boolean) = $a.all.filter(f).map((x) -> x.id)
 
 class Summary {
@@ -35,8 +38,8 @@ ids: Map<String, String> = $a.all.toMap((x) -> x.slug, (x) -> x.id)
 local methis = this
 hidden output {
   files {
-    ["idx.json"] {
-      renderer = new JsonRenderer { indent = "" }
+    ["iolin-index.json"] {
+      renderer = new JsonRenderer { indent = gg_indent }
       value = methis
     }
   }

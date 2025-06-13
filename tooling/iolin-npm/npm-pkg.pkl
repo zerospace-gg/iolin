@@ -1,0 +1,40 @@
+amends "PackageJson.pkl"
+import "../../PklProject" as project
+import "PackageJson.pkl" as PJ
+
+name = "gg-iolin"
+version = project.package.version
+description = "ZeroSpace game data library - units, buildings, abilities, and more"
+main = "index.js"
+types = "index.d.ts"
+files = new Listing {
+  "*.js"
+  "*.d.ts"
+  "*.ts"
+  "README.md"
+  "LICENSE"
+}
+keywords = new Listing {
+  "zerospace"
+  "rts"
+  "game-data"
+  "units"
+  "buildings"
+  "abilities"
+}
+author = "ZeroSpace"
+license = "MIT"
+repository = new PJ.Repository {
+  type = "git"
+  url = "git+https://github.com/zerospace-gg/iolin.git"
+}
+bugs = new PJ.Bugs {
+  url = "https://github.com/zerospace-gg/iolin/issues"
+}
+homepage = "https://github.com/zerospace-gg/iolin#readme"
+engines = new PJ.Engines {
+  node = ">=16.0.0"
+}
+publishConfig = new PJ.PublishConfig {
+  access = "public"
+}

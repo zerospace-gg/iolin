@@ -3,6 +3,9 @@ import ".../engine/entity.pkl" as Entity
 import "tags.pkl" as $tags
 import "all.pkl"
 
+/// JSON indentation parameter - defaults to pretty print, can be set to "" for compact output
+hidden gg_indent: String = "  "
+
 zsVersion: String? = versioning.zsVersion
 ggVersion: String? = versioning.ggVersion
 ggUpdated: String? = versioning.ggUpdated
@@ -38,7 +41,7 @@ local methis = this
 hidden output {
   files {
     ["release.json"] {
-      renderer = new JsonRenderer { indent = "  " }
+      renderer = new JsonRenderer { indent = gg_indent }
       value = methis
     }
   }

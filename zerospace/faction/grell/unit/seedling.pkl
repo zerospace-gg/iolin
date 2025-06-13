@@ -7,7 +7,7 @@ speed = 225 // 562 on biomass
 
 buildTime = 5
 
-infusable = true
+canBeInfused = true
 infuseCost = 2
 armorType = "medium"
 
