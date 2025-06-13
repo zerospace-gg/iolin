@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Helping to educate the Orion sector",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +17,8 @@
     "dotenv": "^16.4.5",
     "qs": "^6.12.0",
     "tsx": "^4.7.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
   }
 }
