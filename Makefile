@@ -10,7 +10,7 @@
 #
 # PRODUCTION MODE (make dist):
 #   - Builds all files in batch mode for faster performance
-#   - Uses actual version from package.json and current timestamps
+#   - Uses actual version from PklProject and current timestamps
 #   - Outputs to dist/ directory
 #   - Optimized for production builds and CI/CD
 #
@@ -22,8 +22,6 @@
 #   clean        - Remove all build artifacts
 #   force        - Clean and rebuild
 #   build-report - Show build statistics and release info
-#   build-dev    - Build all pkl files individually (internal target)
-#   build-dist   - Build all pkl files in batch mode (internal target)
 #
 # DEPENDENCIES:
 #   - pkl: PKL language runtime
@@ -34,9 +32,6 @@
 #   - zs_version: Defined in version.pkl and imported by versioning.pkl
 #   - gg_version: Extracted from PklProject package.version using pkl
 #   - Timestamps: Generated using date command at build time for production builds
-
-# Default distribution directory
-DIST_DIR ?= dev-dist
 
 # Version extraction from PklProject package block using pkl (for gg_version)
 GG_VERSION := $(shell pkl eval -x package.version PklProject)
@@ -51,55 +46,75 @@ PKL := $(shell which pkl)
 # Find pkl files
 PKL_FILES := $(shell find zerospace meta -name '*.pkl' | sort)
 
-.PHONY: all dev dist clean test build-report
-.PHONY: create-dist-dir build-dev build-dist copy-types
+# Generate target lists
+DEV_TARGETS := $(PKL_FILES:%.pkl=dev-dist/json/%.json)
+DIST_TARGETS := $(PKL_FILES:%.pkl=dist/json/%.json)
+
+.PHONY: all dev dist clean test build-report force
 
 # Default target points to dev build
 all: dev
 
 # Development build (individual file processing)
-dev: DIST_DIR = dev-dist
-dev: create-dist-dir build-dev copy-types build-report
+dev: $(DEV_TARGETS) dev-dist/json/gg-iolin.d.ts build-report-dev
 
-# Production build (folder mode - faster)
-dist: DIST_DIR = dist
-dist: create-dist-dir build-dist copy-types build-report
+# Production build (batch mode - faster)
+dist: dist/json copy-types-dist build-report-dist
 
-# Create distribution directory
-create-dist-dir:
-	mkdir -p $(DIST_DIR)/json
+# Pattern rule for dev builds (no version parameters)
+dev-dist/json/%.json: %.pkl
+	@mkdir -p $(dir $@)
+	$(PKL) eval -m dev-dist/json $<
 
-# Build files individually (dev mode)
-build-dev:
-	@for file in $(PKL_FILES); do \
-		$(PKL) eval -m $(DIST_DIR)/json $$file; \
-	done
-
-# Build files in batch mode (dist mode)
-build-dist:
-	$(PKL) eval $(PKL_FILES) -m $(DIST_DIR)/json -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)"
+# Pattern rule for dist builds (batch mode with version parameters)
+dist/json: $(PKL_FILES)
+	@mkdir -p dist/json
+	$(PKL) eval $(PKL_FILES) -m dist/json -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)"
 
 # Run pkl tests
 test:
 	$(PKL) test
 
-# Copy TypeScript type definitions
-copy-types:
-	cp -av ext/gg-iolin.d.ts $(DIST_DIR)/json/gg-iolin.d.ts
+# Copy TypeScript type definitions for dev
+dev-dist/json/gg-iolin.d.ts: ext/gg-iolin.d.ts
+	@mkdir -p $(dir $@)
+	cp -av $< $@
 
-# Generate build report
-build-report: SHELL := /bin/bash
-build-report:
+# Copy TypeScript type definitions for dist
+copy-types-dist: dist/json
+	cp -av ext/gg-iolin.d.ts dist/json/gg-iolin.d.ts
+
+# Generate build report for dev
+build-report-dev:
 	@echo "Build completed successfully"
 	@echo ""
 	@echo "Total bytes of JSON rendered:"
-	@find $(DIST_DIR)/json -name '*.json' -type f -exec cat {} \; 2>/dev/null | wc -c || echo "0"
+	@find dev-dist/json -name '*.json' -type f -exec cat {} \; 2>/dev/null | wc -c || echo "0"
 	@echo ""
 	@echo "Total number of JSON files rendered:"
-	@find $(DIST_DIR)/json -name '*.json' -type f 2>/dev/null | wc -l || echo "0"
+	@find dev-dist/json -name '*.json' -type f 2>/dev/null | wc -l || echo "0"
 	@echo ""
 	@echo "Release Details:"
-	@jq -C . $(DIST_DIR)/json/release.json 2>/dev/null || echo "No release.json found"
+	@jq -C . dev-dist/json/release.json 2>/dev/null || echo "No release.json found"
+
+# Generate build report for dist
+build-report-dist:
+	@echo "Build completed successfully"
+	@echo ""
+	@echo "Total bytes of JSON rendered:"
+	@find dist/json -name '*.json' -type f -exec cat {} \; 2>/dev/null | wc -c || echo "0"
+	@echo ""
+	@echo "Total number of JSON files rendered:"
+	@find dist/json -name '*.json' -type f 2>/dev/null | wc -l || echo "0"
+	@echo ""
+	@echo "Release Details:"
+	@jq -C . dist/json/release.json 2>/dev/null || echo "No release.json found"
+
+# Generic build report (for manual invocation)
+build-report:
+	@echo "Build completed successfully"
+	@echo ""
+	@echo "Specify DIST_DIR to see details, e.g.: make build-report DIST_DIR=dist"
 
 # Clean all distribution directories
 clean:
