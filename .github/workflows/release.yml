@@ -106,8 +106,11 @@ jobs:
           echo "Release version: $VERSION"
           echo "Note: Using git tag for Pkl package versioning"
 
-      - name: Build project
+      - name: Run full CI process
         run: just all
+
+      - name: Run build tests
+        run: just test-build
 
       - name: Verify build integrity
         run: just verify
