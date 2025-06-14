@@ -2,9 +2,9 @@ amends "PackageJson.pkl"
 import "../../PklProject" as project
 import "PackageJson.pkl" as PJ
 
-name = "gg-iolin"
+name = "@zerospacegg/iolin"
 version = project.package.version
-description = "ZeroSpace game data library - units, buildings, abilities, and more"
+description = "Community ZeroSpace game data library - units, buildings, abilities, and more"
 main = "index.js"
 types = "index.d.ts"
 files = new Listing {
@@ -22,8 +22,8 @@ keywords = new Listing {
   "buildings"
   "abilities"
 }
-author = "ZeroSpace"
-license = "MIT"
+author = "baby shoGGoth and ZeroSpace.gg"
+license = "CC0-1.0"
 repository = new PJ.Repository {
   type = "git"
   url = "git+https://github.com/zerospace-gg/iolin.git"

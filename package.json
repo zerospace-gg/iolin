@@ -11,7 +11,7 @@
     "clean:npm": "rm -rf dist/npm",
     "clean:all": "rm -rf dist",
     "build:npm": "npm run clean:npm && npm run tsc && cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts",
-    "build:full": "make all",
+    "build:full": "just all",
     "build:watch": "npm run tsc:watch"
   },
   "keywords": [],

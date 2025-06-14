@@ -1,58 +1,159 @@
-# Data Engine for ZeroSpace
+# iolin - ZeroSpace Data Engine
 
-This will be open source soon, I'm just too busy to do the associated work right now, but wanted to show it off to the pkl community :)
+A comprehensive data processing engine for [ZeroSpace](https://playzerospace.com), the upcoming real-time strategy game. This is a community project by baby shoGGoth and [ZeroSpace.gg](https://zerospace.gg) and is not officially affiliated with the game developers. This repository contains the tooling and data definitions that power community tools and fan sites.
 
-This is an unconventional (not that pkl's old enough to have a lot of conventions, perhaps unintentional?) use case.
+## What is iolin?
 
-I'm making a dataset for [the upcoming RTS ZeroSpace](https://playzerospace.com) currently in backer-only Alpha phases, and [our fan site](https://zerospace.gg) to support the community.
+iolin is a [Pkl](https://pkl-lang.org/)-based data engine that extracts, validates, and transforms ZeroSpace game data into multiple formats for community use. It generates:
+
+- **JSON data files** for web applications and APIs
+- **TypeScript modules** with full type safety for JavaScript/Node.js projects  
+- **NPM package** (`@zerospacegg/iolin`) for easy integration
+
+## Quick Start
+
+### Using the NPM Package
+
+```bash
+npm install @zerospacegg/iolin
+```
+
+```typescript
+import { loadUnit, loadBuilding, Units, Buildings } from '@zerospacegg/iolin/all';
+
+// Load specific entities
+const marine = loadUnit('terran-marine');
+const barracks = loadBuilding('terran-barracks');
+
+// Access all collections
+console.log(Object.keys(Units)); // All unit IDs
+console.log(Buildings['terran-command-center']); // Specific building data
+```
+
+### Development Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Install just (build tool)
+brew install just  # macOS
+# or curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash
+
+# Run full build
+just all
+
+# Development workflow
+just dev          # Quick rebuild
+just watch        # TypeScript watch mode
+just clean        # Clean all outputs
+```
 
 ## Build System
 
-The project uses a multi-stage build system that generates:
+The project uses a multi-stage build pipeline:
 
-1. **JSON files** (`dist/json/`) - Raw data output from PKL files
-2. **TypeScript files** (`dist/typescript/`) - Generated TypeScript modules with proper typing
-3. **JavaScript files** (`dist/npm/`) - Compiled JavaScript ready for npm distribution
-
-### Available Build Targets
+### Available Commands
 
 ```bash
-# Complete build (JSON + TypeScript + JavaScript)
-make all
+# Main builds
+just all          # Complete build: JSON + tests + TypeScript + NPM
+just json         # Generate JSON files from Pkl sources
+just typescript   # Generate TypeScript modules (requires json)
+just npm          # Build NPM package (requires typescript)
 
-# Individual build stages
-make json        # Build JSON files only
-make typescript  # Generate TypeScript files (requires JSON)
-make npm         # Compile to JavaScript (requires TypeScript)
+# Development
+just dev          # Quick development build (json + typescript)
+just watch        # TypeScript watch mode
+just test         # Run Pkl tests
 
-# Utility targets
-make clean       # Remove all dist/ files
-make clean-npm   # Remove only dist/npm/ files  
-make test        # Run build verification tests
-make build-report # Show build statistics
-```
-
-### NPM Scripts
-
-```bash
-# TypeScript compilation only
-npm run tsc              # Compile TypeScript to JavaScript
-npm run tsc:watch        # Watch mode compilation
-
-# Full builds
-npm run build:npm        # Clean + compile + copy definitions
-npm run build:full       # Complete build via make
-
-# Testing and cleanup
-npm test                 # Run build verification
-npm run clean:npm        # Clean npm output
-npm run clean:all        # Clean all output
+# Utilities
+just clean        # Remove all build artifacts
+just clean-npm    # Remove only NPM artifacts
+just verify       # Verify build integrity
+just stats        # Show build statistics
+just force        # Clean + rebuild everything
 ```
 
 ### Output Structure
 
-- `dist/json/` - PKL-generated JSON files
-- `dist/typescript/` - Generated TypeScript modules with full type safety
-- `dist/npm/` - Compiled JavaScript with declaration files, ready for import
+```
+dist/
+├── json/              # Pkl-generated JSON files
+│   ├── units/         # Unit data files
+│   ├── buildings/     # Building data files
+│   ├── factions/      # Faction data files
+│   └── ...
+├── typescript/        # Generated TypeScript modules
+│   ├── index.ts       # Main entry point
+│   ├── all.ts         # Collections + load API
+│   ├── units.ts       # Unit collection
+│   └── ...
+└── npm/               # Compiled NPM package
+    ├── package.json
+    ├── index.js
+    ├── *.d.ts         # Type definitions
+    └── ...
+```
 
-The TypeScript generation creates strongly-typed modules for all game entities (units, buildings, factions, etc.) with proper type definitions from `gg-iolin.d.ts`.
+## Data Schema
+
+All game entities follow a consistent structure with strong typing:
+
+```typescript
+interface Unit {
+  id: string;
+  slug: string;
+  name: string;
+  type: "unit";
+  subtype?: string;
+  faction: string;
+  stats: UnitStats;
+  abilities: string[];
+  // ... and more
+}
+```
+
+Entity types include:
+- **Units** - All game units (marines, workers, etc.)
+- **Buildings** - Structures and production facilities
+- **Factions** - Playable factions (Terran, Zerg, etc.)
+- **Abilities** - Unit and faction abilities
+- **Maps** - Multiplayer and campaign maps
+- **Upgrades** - Research upgrades
+- **Coop Content** - Cooperative mission data
+
+## GitHub Actions
+
+Automated CI/CD pipeline handles:
+
+- **CI**: Tests, builds, and validates on every PR/push
+- **Auto-versioning**: Patch version bumps on main branch merges
+- **NPM Publishing**: Automatic releases to `@zerospacegg/iolin`
+- **GitHub Releases**: Release artifacts including JSON data bundles
+
+## Contributing
+
+This is primarily a data extraction and processing repository maintained by the ZeroSpace.gg community. The game data itself comes from ZeroSpace's files and is not editable here.
+
+For bugs or feature requests related to the tooling:
+1. Open an issue describing the problem
+2. PRs welcome for build system improvements
+3. See existing issues for contribution opportunities
+
+## Licensing
+
+- **Code & Tooling**: ISC License (see [LICENSE](LICENSE))
+- **Game Data**: CC0 Public Domain (see npm package for details)
+
+The extracted ZeroSpace game data is released under CC0 to enable community tool development, while the processing code and tooling remain under ISC license. This is a community project and is not officially affiliated with ZeroSpace or Industrial Annihilation.
+
+## Related Projects
+
+- [ZeroSpace Official Site](https://playzerospace.com) - The game itself
+- [zerospace.gg](https://zerospace.gg) - Community fan site powered by iolin
+- [Pkl Language](https://pkl-lang.org/) - The configuration language powering this engine
+
+---
+
+Built with ❤️ by baby shoGGoth and ZeroSpace.gg for the ZeroSpace community
