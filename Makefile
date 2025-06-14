@@ -4,9 +4,10 @@
 # It builds files individually with consistent versioning and outputs to dist/ directory.
 #
 # AVAILABLE TARGETS:
-#   all          - Default target, runs complete build (includes TypeScript)
+#   all          - Default target, runs complete build (includes TypeScript and npm)
 #   json         - Build JSON files only
 #   typescript   - Build TypeScript files only
+#   npm          - Compile TypeScript to JavaScript in dist/npm
 #   test         - Run pkl tests
 #   clean        - Remove dist directory
 #   force        - Clean and rebuild
@@ -34,18 +35,22 @@ ZEROSPACE_TARGETS := $(shell find zerospace -name '*.pkl' | sed 's|zerospace/||'
 META_TARGETS := $(shell find meta -name '*.pkl' | sed 's|meta/||' | sed 's|\.pkl$$|.json|' | sed 's|^|dist/json/|')
 JSON_TARGETS := $(ZEROSPACE_TARGETS) $(META_TARGETS)
 
-.PHONY: all json typescript clean test build-report force
+.PHONY: all json typescript npm clean clean-npm test build-report force
 
 # Default target
-all: json typescript build-report
+all: json pkl-test typescript npm build-report
 
 # Build JSON files
 json: $(JSON_TARGETS) dist/json/gg-iolin.d.ts
 
 # Build TypeScript files (depends on JSON files being built first)
 typescript: json
-	@echo "Generating TypeScript files..."
-	@node scripts/generate-ts.mjs dist
+	node scripts/generate-ts.mjs dist
+
+# Compile TypeScript to JavaScript (depends on TypeScript files being built first)
+npm: typescript
+	npm run tsc
+	cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts
 
 # Pattern rule for JSON files from zerospace
 dist/json/%.json: zerospace/%.pkl
@@ -62,28 +67,24 @@ dist/json/gg-iolin.d.ts: ext/gg-iolin.d.ts
 	@mkdir -p $(dir $@)
 	cp -av $< $@
 
-
-
 # Run pkl tests
-test:
+pkl-test:
 	$(PKL) test
 
 # Generate build report
 build-report:
-	@echo "Build completed successfully"
-	@echo ""
-	@echo "Total bytes of JSON rendered:"
-	@find dist/json -name '*.json' -type f -exec cat {} \; 2>/dev/null | wc -c || echo "0"
-	@echo ""
-	@echo "Total number of JSON files rendered:"
-	@find dist/json -name '*.json' -type f 2>/dev/null | wc -l || echo "0"
-	@echo ""
 	@echo "Release Details:"
 	@jq -C . dist/json/release.json 2>/dev/null || echo "No release.json found"
 
 # Clean distribution directory
 clean:
 	rm -rf dist
+	@echo "Cleaned all distribution directories"
+
+# Clean only npm directory
+clean-npm:
+	rm -rf dist/npm
+	@echo "Cleaned npm distribution directory"
 
 # Force rebuild
 force: clean all

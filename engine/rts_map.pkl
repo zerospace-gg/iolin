@@ -19,8 +19,8 @@ inLadderPool: Boolean = true
 
 /// number of players this map allows, including AI
 players: Number? =
-  if (type == "1p") 1
-  else if (type == "1v1") 2
-  else if (type == "2v2") 4
-  else if (type == "ffa") 4 // technically this is 8 with ai but eh
+  if (subtype == "1p") 1
+  else if (subtype == "1v1") 2
+  else if (subtype == "2v2") 4
+  else if (subtype == "ffa") 4 // technically this is 8 with ai but eh
   else null

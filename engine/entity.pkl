@@ -79,9 +79,6 @@ fromFuture: Boolean = false
 
 maxOwned: Number?
 
-/// additional notes and information about this gamepiece
-notes: Listing<String>
-
 /// creates handles things that build / produce / cast / otherwise create
 creates: Listing<$t.Slug>(isDistinct)?
 createdBy: Listing<$t.Slug>(isDistinct)?

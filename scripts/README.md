@@ -1,84 +1,71 @@
-# TypeScript Generation Scripts
+# Build Scripts
 
-These scripts automatically generate TypeScript files from PKL/JSON output, providing type-safe access to game data.
+This directory contains scripts for the TypeScript build pipeline.
 
 ## Scripts
 
-### `build-ts-file.js`
+### `generate-ts.mjs`
 
-Converts individual JSON files to TypeScript with proper type annotations.
+The main TypeScript generation script that converts JSON files from PKL output into fully-typed TypeScript modules.
 
 **Usage:**
 ```bash
-node scripts/build-ts-file.js <json-file-path> <output-dir>
+node scripts/generate-ts.mjs <dist-dir>
 ```
 
 **Example:**
 ```bash
-node scripts/build-ts-file.js dev-dist/json/faction/legion/hero/galavax.json dev-dist
+node scripts/generate-ts.mjs dist
 ```
 
-This generates `dev-dist/typescript/faction/legion/hero/galavax.ts` with content like:
-```typescript
-import type { Unit } from "../gg-iolin";
+This processes all JSON files in `dist/json/` and generates:
+- Individual entity TypeScript files with proper type annotations
+- Collection files (units.ts, buildings.ts, factions.ts, etc.)
+- Main index.ts file with all exports
+- Metadata files (tags.ts, release.ts, idx.ts)
 
-const Galavax: Unit = {
-  // ... JSON data ...
-} satisfies Unit;
+### `test-build.mjs`
 
-export default Galavax;
-```
-
-### `build-ts-index.js`
-
-Generates the main TypeScript index file that exports all entities organized by type.
+Automated test script that verifies the complete TypeScript build pipeline is working correctly.
 
 **Usage:**
 ```bash
-node scripts/build-ts-index.js <dist-dir>
+node scripts/test-build.mjs
+# or via npm script:
+npm test
 ```
 
-**Example:**
-```bash
-node scripts/build-ts-index.js dev-dist
-```
-
-This creates:
-- `dev-dist/typescript/index.ts` - Main exports with proper typing
-- `dev-dist/typescript/tags.ts` - Tags metadata
-- `dev-dist/typescript/release.ts` - Release info
-- `dev-dist/typescript/idx.ts` - Index metadata (used for type inference)
-- Copies `ext/gg-iolin.d.ts` to the typescript directory
+This script validates:
+- All expected files are generated
+- JavaScript compilation was successful
+- Generated modules can be imported correctly
+- TypeScript definitions are valid
 
 ## Makefile Integration
 
-The scripts are integrated into the Makefile for easy use:
+The scripts are integrated into the main build system:
 
-### Development Build with TypeScript
 ```bash
-make dev-ts
-# or
-make ts-dev
-```
-
-### Production Build with TypeScript
-```bash
-make dist-ts
-# or  
-make ts-dist
+make typescript    # Generate TypeScript files
+make npm          # Compile TypeScript to JavaScript
+make all          # Complete build pipeline
 ```
 
 ## Generated Structure
 
-The TypeScript build creates:
+The build pipeline creates two output directories:
 
+### TypeScript Output (`dist/typescript/`)
 ```
-DIST_DIR/typescript/
+dist/typescript/
 ├── index.ts              # Main exports file
 ├── gg-iolin.d.ts         # Type definitions
 ├── tags.ts               # Tags metadata
 ├── release.ts            # Release info
 ├── idx.ts                # Index metadata
+├── units.ts              # Units collection
+├── buildings.ts          # Buildings collection
+├── factions.ts           # Factions collection
 └── faction/
     ├── grell/
     │   ├── hero/
@@ -90,8 +77,21 @@ DIST_DIR/typescript/
             └── galavax.ts
 ```
 
-## Usage in TypeScript Projects
+### JavaScript Output (`dist/npm/`)
+```
+dist/npm/
+├── index.js              # Compiled main exports
+├── index.d.ts            # Generated declarations
+├── gg-iolin.d.ts         # Core type definitions
+├── units.js              # Compiled units collection
+├── units.d.ts            # Units declarations
+└── faction/              # Compiled entity files
+    └── ...
+```
 
+## Usage Examples
+
+### TypeScript (from dist/typescript/)
 ```typescript
 // Import everything
 import GameData from "./dist/typescript";
@@ -101,17 +101,25 @@ import { Units, Buildings, Factions } from "./dist/typescript";
 
 // Import specific entities
 import Galavax from "./dist/typescript/faction/legion/hero/galavax";
-
-// Access by ID
-const galavax = GameData.All["faction/legion/hero/galavax"];
-
-// Get slug from ID
-const slug = GameData.Ids["galavax"]; // "faction/legion/hero/galavax"
 ```
 
-## Type Inference
+### JavaScript/Node.js (from dist/npm/)
+```javascript
+// CommonJS
+const { Units, Buildings, Factions } = require('./dist/npm');
 
-The scripts automatically infer TypeScript types using the idx metadata:
+// ES Modules
+import { Units, Buildings, Factions } from './dist/npm/index.js';
+
+// Access data
+const allUnits = Units;
+const grellFaction = Factions["faction/grell"];
+```
+
+## Features
+
+### Type Inference
+The generation script automatically infers TypeScript types:
 
 1. **Data source**: Uses `meta/idx.pkl` output to determine types for all entities
 2. **Primary type mapping**: `unit` → `Unit`, `building` → `Building`, etc.
@@ -119,34 +127,31 @@ The scripts automatically infer TypeScript types using the idx metadata:
    - `faction-ability` + `talent` → `FactionTalent`
    - `faction-ability` + `topbar` → `FactionTopbar`
    - `faction-ability` + `passive` → `FactionPassive`
-4. **Proper typing**: Each collection is strongly typed (no `any` types)
+4. **Strong typing**: Each collection is properly typed
    - `Units: Record<string, Unit>`
    - `Buildings: Record<string, Building>`
    - `Factions: Record<string, Faction>`
 
+### Code Quality
+- All TypeScript files are formatted with Prettier
+- Uses `satisfies` operator for type safety while preserving literal types
+- Import paths are automatically calculated
+- Full source map generation for debugging
+
+### Build Integration
+- Integrated with Makefile dependency tracking
+- Only rebuilds changed files
+- Automatic copying of type definitions
+- Build verification tests
+
 ## Dependencies
 
-- **prettier**: Used for code formatting
-- **Node.js**: Runtime for the scripts
-
-Install with:
+Install required packages:
 ```bash
 npm install
 ```
 
-## File Pattern Matching
-
-The Makefile uses pattern rules for efficient builds:
-
-- `dev-dist/typescript/%.ts: dev-dist/json/%.json` - Individual file conversion
-- TypeScript index depends on all JSON files being built first
-- Make's dependency tracking ensures only changed files are rebuilt
-
-## Notes
-
-- All TypeScript files are formatted with Prettier
-- The `satisfies` operator ensures type safety while preserving literal types
-- Import paths are automatically calculated relative to the index file
-- Meta files (tags, release, idx) are converted from their respective JSON files
-- Type collections are generated dynamically from idx data, ensuring proper typing
-- Each export group (`Units`, `Buildings`, etc.) uses specific TypeScript interfaces
+Required:
+- **typescript**: TypeScript compiler
+- **prettier**: Code formatting
+- **@types/node**: Node.js type definitions

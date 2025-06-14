@@ -7,6 +7,8 @@ import "parent_info.pkl" as ParentInfo
 import "ability.pkl" as Ability
 import "types.pkl" as $t
 import "gamepiece.pkl" as me
+import "building.pkl" as Building
+import "unit.pkl" as Unit
 local methis = this
 
 hidden fixed dynamicTags {
@@ -54,7 +56,7 @@ fixed slug: $t.Slug =
   else
     super.slug
 
-fixed belongsTo: String? = parent?.slug
+hidden fixed belongsTo: String? = parent?.slug
 fixed faction: String? = parent?.fromPath?.faction ?? super.faction
 
 /// short description of the purpose of this, to be used in summaries in UI. Many of these won't be in game.
@@ -134,13 +136,22 @@ variantOf: String?
 variantOfId: String?
 variantSiblings: List<String>?
 
-hidden variants: Mapping<String, me> = new Mapping<String, me> {
+hidden variantBuildings: Mapping<String, Building> = new Mapping<String, me> {
   default { key -> name = key; parent = parentInfo; variantOf = methis.slug }
 }
-local allVariantSlugs = variants.toMap().values.map((v) -> v.slug).toList()
 
-fixed variant: Mapping<String, me> = new {
-  for (n, a in variants) {
+fixed variantBuilding: Mapping<String, Building> = new {
+  for (n, a in variantBuildings) {
+    [a.slug] = a
+  }
+}
+
+hidden variantUnits: Mapping<String, Unit> = new Mapping<String, me> {
+  default { key -> name = key; parent = parentInfo; variantOf = methis.slug }
+}
+
+fixed variantUnit: Mapping<String, Unit> = new {
+  for (n, a in variantUnits) {
     [a.slug] = a
   }
 }
