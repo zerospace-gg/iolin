@@ -26,24 +26,29 @@ clear_line() {
 }
 
 # Validate that we have Pkl files to process
-echo "🔍 Debug: Checking for Pkl files..."
-echo "Current directory: $(pwd)"
-echo "Directory contents:"
-ls -la
-echo "Checking zerospace directory:"
-ls -la zerospace 2>/dev/null || echo "zerospace directory not found"
-echo "Checking meta directory:"
-ls -la meta 2>/dev/null || echo "meta directory not found"
-echo "Looking for .pkl files:"
-find . -name '*.pkl' -type f | head -10 || echo "No .pkl files found anywhere"
-find zerospace meta
+pkl_files_found=0
 
-if ! find zerospace meta -name '*.pkl' 2>/dev/null | grep -q .; then
+if [ -d "zerospace" ]; then
+    zerospace_files=$(find zerospace -name '*.pkl' 2>/dev/null | wc -l)
+    pkl_files_found=$((pkl_files_found + zerospace_files))
+fi
+
+if [ -d "meta" ]; then
+    meta_files=$(find meta -name '*.pkl' 2>/dev/null | wc -l)
+    pkl_files_found=$((pkl_files_found + meta_files))
+fi
+
+if [ "$pkl_files_found" -eq 0 ]; then
     echo "❌ ERROR: No .pkl files found in zerospace or meta directories"
+    echo "Current directory: $(pwd)"
     echo "Available directories:"
     find . -maxdepth 2 -type d | sort
+    echo "Debug: Looking for .pkl files everywhere:"
+    find . -name '*.pkl' -type f | head -10 || echo "No .pkl files found anywhere"
     exit 1
 fi
+
+echo "✓ Found $pkl_files_found .pkl files to process"
 
 if [ "$batch_mode" = "true" ]; then
     # Batch mode - fast, no progress display
