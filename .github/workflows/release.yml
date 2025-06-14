@@ -25,7 +25,7 @@ jobs:
         id: version-check
         run: |
           # Get current version from PklProject
-          CURRENT_VERSION=$(pkl eval -f yaml PklProject -p package.version | tr -d '"')
+          CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
           echo "Current version in PklProject: $CURRENT_VERSION"
 
           # Extract major.minor from current version
@@ -107,7 +107,7 @@ jobs:
 
           # Verify the change
           echo "Updated PklProject version:"
-          pkl eval -f yaml PklProject -p package.version
+          pkl eval PklProject -x package.version
 
       - name: Commit version bump
         run: |
