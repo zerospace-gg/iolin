@@ -10,12 +10,19 @@ gg_at="$3"
 gg_ts="$4"
 gg_indent="$5"
 
-# Get terminal width for proper line clearing
-columns=$(tput cols)
+# Auto-detect CI environment and force batch mode for cleaner output
+if [ "${CI:-}" = "true" ] || [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CONTINUOUS_INTEGRATION:-}" = "true" ] || [ "${BUILDKITE:-}" = "true" ] || [ "${JENKINS_URL:-}" != "" ] || [ "${TRAVIS:-}" = "true" ]; then
+    batch_mode="true"
+fi
 
-# Clear current line properly
+# Get terminal width for proper line clearing (fallback for CI)
+columns=$(tput cols 2>/dev/null || echo "80")
+
+# Clear current line properly (only in interactive mode)
 clear_line() {
-    printf "\r%*s\r" "$columns" ""
+    if [ "$batch_mode" != "true" ]; then
+        printf "\r%*s\r" "$columns" ""
+    fi
 }
 
 # Validate that we have Pkl files to process
@@ -63,13 +70,17 @@ else
             exit 1
         fi
 
-        # Show progress with spinner after building
-        clear_line
-        printf "   %s (%3d/%3d) Rendering %s\r" "$spinner_char" "$current_file" "$total_files" "$file"
+        # Show progress with spinner after building (only in interactive mode)
+        if [ "$batch_mode" != "true" ]; then
+            clear_line
+            printf "   %s (%3d/%3d) Rendering %s\r" "$spinner_char" "$current_file" "$total_files" "$file"
+        fi
     done
 
     # Clear the line and show completion
-    clear_line
+    if [ "$batch_mode" != "true" ]; then
+        clear_line
+    fi
     printf "   ✓ Rendered %3d files\n" "$total_files"
 fi
 
