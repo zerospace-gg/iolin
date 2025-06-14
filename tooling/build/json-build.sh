@@ -26,8 +26,21 @@ clear_line() {
 }
 
 # Validate that we have Pkl files to process
-if ! find zerospace meta -name '*.pkl' | grep -q .; then
+echo "🔍 Debug: Checking for Pkl files..."
+echo "Current directory: $(pwd)"
+echo "Directory contents:"
+ls -la
+echo "Checking zerospace directory:"
+ls -la zerospace 2>/dev/null || echo "zerospace directory not found"
+echo "Checking meta directory:"
+ls -la meta 2>/dev/null || echo "meta directory not found"
+echo "Looking for .pkl files:"
+find . -name '*.pkl' -type f | head -10 || echo "No .pkl files found anywhere"
+
+if ! find zerospace meta -name '*.pkl' 2>/dev/null | grep -q .; then
     echo "❌ ERROR: No .pkl files found in zerospace or meta directories"
+    echo "Available directories:"
+    find . -maxdepth 2 -type d | sort
     exit 1
 fi
 
