@@ -136,7 +136,7 @@ variantOf: String?
 variantOfId: String?
 variantSiblings: List<String>?
 
-hidden variantBuildings: Mapping<String, Building> = new Mapping<String, me> {
+hidden variantBuildings: Mapping<String, Building> = new Mapping<String, Building> {
   default { key -> name = key; parent = parentInfo; variantOf = methis.slug }
 }
 
@@ -146,7 +146,7 @@ fixed variantBuilding: Mapping<String, Building> = new {
   }
 }
 
-hidden variantUnits: Mapping<String, Unit> = new Mapping<String, me> {
+hidden variantUnits: Mapping<String, Unit> = new Mapping<String, Unit> {
   default { key -> name = key; parent = parentInfo; variantOf = methis.slug }
 }
 
