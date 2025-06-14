@@ -11,7 +11,7 @@ gg_ts="$4"
 gg_indent="$5"
 
 # Auto-detect CI environment and force batch mode for cleaner output
-if [ "${CI:-}" = "true" ] || [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CONTINUOUS_INTEGRATION:-}" = "true" ] || [ "${BUILDKITE:-}" = "true" ] || [ "${JENKINS_URL:-}" != "" ] || [ "${TRAVIS:-}" = "true" ]; then
+if [ "${CI:-}" = "true" ] || [ "${GITHUB_ACTIONS:-}" = "true" ] || [ "${CONTINUOUS_INTEGRATION:-}" = "true" ]; then
     batch_mode="true"
 fi
 
@@ -36,6 +36,7 @@ echo "Checking meta directory:"
 ls -la meta 2>/dev/null || echo "meta directory not found"
 echo "Looking for .pkl files:"
 find . -name '*.pkl' -type f | head -10 || echo "No .pkl files found anywhere"
+find zerospace meta
 
 if ! find zerospace meta -name '*.pkl' 2>/dev/null | grep -q .; then
     echo "❌ ERROR: No .pkl files found in zerospace or meta directories"
