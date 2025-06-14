@@ -121,9 +121,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build project
-        run: |
-          # Run full build
-          npm run build:full
+        run: just all
 
       - name: Verify build integrity
         run: just verify

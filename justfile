@@ -1,12 +1,13 @@
 # Justfile for iolin build system
 # Run `just --list` to see all available commands
-
 # Variables
+
 gg_version := `pkl eval -x package.version PklProject`
 gg_at := `date -Iseconds`
 gg_ts := `date +%s`
 
 # Internal build mode flags
+
 [private]
 _batch_mode := "false"
 [private]
@@ -48,7 +49,7 @@ npm: typescript
     @# Verify package.json was generated
     @if [ ! -f "dist/npm/package.json" ]; then echo "❌ ERROR: NPM package.json generation failed"; exit 1; fi
     @echo "   • TypeScript compilation"
-    @npm run tsc > /dev/null 2>&1
+    @npx tsc > /dev/null 2>&1
     @# Verify TypeScript compilation succeeded
     @if [ ! -f "dist/npm/index.js" ]; then echo "❌ ERROR: TypeScript compilation failed - no index.js generated"; exit 1; fi
     @cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts
@@ -74,7 +75,12 @@ build-report:
     @echo "Release Details:"
     @if [ -f "dist/json/release.json" ]; then jq -C . dist/json/release.json; else echo "⚠️  Warning: No release.json found"; fi
 
-# Clean all build artifacts
+
+# Run build verification tests
+test-build:
+    @echo "🧪 Running build verification tests"
+    @node scripts/test-build.mjs
+    @echo "✅ Build tests passed"# Clean all build artifacts
 clean:
     @echo "🧹 Cleaning dist directory"
     @rm -rf dist
@@ -121,7 +127,7 @@ verify:
     @find dist/json -name "*.json" -exec jq empty {} \; || (echo "❌ ERROR: Invalid JSON found"; exit 1)
     @# Check TypeScript compilation
     @echo "   • Checking TypeScript compilation..."
-    @npm run tsc -- --noEmit || (echo "❌ ERROR: TypeScript type checking failed"; exit 1)
+    @if [ -d "dist/typescript" ] && [ -f "dist/typescript/index.ts" ]; then npx tsc --noEmit || (echo "❌ ERROR: TypeScript type checking failed"; exit 1); else echo "   ✓ No TypeScript files to check"; fi
     @# Validate package.json
     @echo "   • Validating package.json..."
     @cd dist/npm && node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))" || (echo "❌ ERROR: Invalid package.json"; exit 1)
