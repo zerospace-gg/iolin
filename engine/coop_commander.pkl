@@ -27,7 +27,7 @@ class CoopLevel extends Child {
 
 unitType = "coop-commander"
 commanderType: "support" | "frontline" | "elemental"
-infusable = true
+canBeInfused = true
 
 hidden commanderFaction: List<Entity>
 fixed unit: Listing<String> = new { ...commanderFaction.filter(isUnit).map(toslug) }

@@ -1,20 +1,27 @@
 {
-  "name": "zsgg-public-library",
-  "version": "1.0.0",
+  "name": "gg-iolin-helpers",
+  "version": "0.0.0",
   "description": "Helping to educate the Orion sector",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node scripts/test-build.mjs",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch",
+    "clean:npm": "rm -rf dist/npm",
+    "clean:all": "rm -rf dist",
+    "build:npm": "npm run clean:npm && npm run tsc && cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts",
+    "build:full": "just all",
+    "build:watch": "npm run tsc:watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@kmariappan/strapi-client-js": "^1.4.0",
-    "@pkl-community/pkl-typescript": "^0.0.14",
-    "@types/node": "^20.12.7",
-    "dotenv": "^16.4.5",
-    "qs": "^6.12.0",
-    "tsx": "^4.7.2"
+    "prettier": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.1",
+    "typescript": "^5.8.3"
   }
 }

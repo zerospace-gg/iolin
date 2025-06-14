@@ -17,7 +17,7 @@ that's out of scope for our project, and it's far easier to just
 mirror the types. as much as i loathe doing so.
 */
 
-export type FactionType = "main" | "merc" | "nonplayer";
+export type FactionType = "main" | "mercenary" | "nonplayer";
 
 export type Tier = "T0" | "T1" | "T2" | "T3" | "T1.5" | "T2.5" | "T3.5" | "T4";
 
@@ -25,7 +25,7 @@ export type UpgradeTier = "T1.5" | "T2.5" | "T3.5";
 
 export type HotKey = string;
 
-export type ArmorType = "none" | "light" | "medium" | "heavy";
+export type ArmorType = "none" | "light" | "medium" | "heavy" | "building";
 
 export type DomainType = "air" | "ground";
 
@@ -35,7 +35,7 @@ export type TargetType = DomainType | AllyDomainType | "self" | "map";
 
 export type TargetMode = "gamepiece" | "location" | "around-self" | "strip";
 
-export type EnergyType = "classic" | "abes" | "topbar";
+export type EnergyType = "classic" | "abes" | "topbar" | "health";
 
 export type AddOnType =
   | "turret"
@@ -58,7 +58,10 @@ export type AbilityType =
   | "spell"
   | "passive"
   | "toggle"
-  | "trigger";
+  | "trigger"
+  | "topbar"
+  | "talent"
+  | "death-trigger";
 
 export type AutoCastMode = "always" | "toggle" | "never";
 
@@ -69,9 +72,25 @@ export type BuildingType =
   | "production"
   | "tech"
   | "special"
-  | "constructing-unit";
+  | "constructing-unit"
+  | "ultimate"
+  | "merc-outpost";
 
-export type MissionType = "coop" | "campaign" | "survival";
+export type CoopMissionType = "escort" | "survival" | "assault-defense";
+
+export type UnitType =
+  | "army"
+  | "hero"
+  | "coop-commander"
+  | "harvester"
+  | "builder"
+  | "special"
+  | "ultimate"
+  | "merc"
+  | "merc-topbar"
+  | "mobile-merc-outpost";
+
+export type CommanderType = "support" | "frontline" | "elemental";
 
 export interface Entity {
   slug: string;
@@ -79,34 +98,34 @@ export interface Entity {
   src: string;
   name: string;
   shortName: string;
-  description: string;
+  description?: string;
   type: string;
   subtype: string;
   tier?: string;
   faction?: string;
   factionType?: FactionType;
-  tagList: string;
+  tagList: string[];
   inGame: boolean;
   fromFuture: boolean;
-  creates: string[];
-  createdBy: string[];
-  unlocks: string[];
-  unlockedBy: string[];
-  unlocksMercTier: string[];
+  creates?: string[];
+  createdBy?: string[];
+  unlocks?: string[];
+  unlockedBy?: string[];
+  unlocksMercTier?: string[];
 }
 
-export interface Ability extends Entity {
+export interface Ability extends ChildEntity {
   activationType: AbilityActivationType;
   subtype: AbilityType;
   hotkey?: HotKey;
-  reverseHotkey?: HotKey;
+  reverseHotKey?: HotKey;
   targets: TargetType[];
   targetMode?: TargetMode;
   togglesMode?: AbilityToggleMode;
   energyCost?: number;
   energyType?: EnergyType;
   cooldown?: number;
-  cooldownAtBuild?: number;
+  cooldownAtBuild?: boolean;
   duration?: number;
   range?: number;
   delay?: number;
@@ -140,6 +159,11 @@ export interface Ability extends Entity {
   bonusVsTags?: string[];
   requiresAddOn?: string;
   autocast: AutoCastMode;
+  requiresMode?: string;
+}
+
+export interface ChildEntity extends Omit<Entity, "id" | "src"> {
+  // belongsTo: string;
 }
 
 export interface Gamepiece extends Entity {
@@ -149,6 +173,7 @@ export interface Gamepiece extends Entity {
   cooldown?: number;
   energyCost?: number;
   energyCostType?: EnergyType;
+  startingEnergy?: number;
   buildTime?: number;
   rebuildable?: boolean;
   rebuildTime?: number;
@@ -168,7 +193,7 @@ export interface Gamepiece extends Entity {
   armor?: number;
   armorType?: ArmorType;
   stunResist?: number;
-  provedsSupply?: number;
+  providesSupply?: number;
   providesBiomass?: number;
   providesDetection?: number;
   providesUpgradesFor?: string[];
@@ -180,32 +205,46 @@ export interface Gamepiece extends Entity {
   ability: Record<string, Ability>;
   addOn: Record<string, AddOn>;
   uuid: string;
+  untargetable: boolean;
+  variantUnit?: Record<string, Unit>;
+  variantBuilding?: Record<string, Building>;
+  maxOwned?: number;
+  timedLife?: number;
 }
 
 export interface AddOn extends Gamepiece {
   addOnType: AddOnType;
   addOnOf: string;
   ability: Record<string, Ability>;
+  // belongsTo: string;
 }
 
-export interface Upgrade extends Entity {
+export interface Upgrade extends ChildEntity {
   upgradeOf: string;
+  researchTime: number;
+  fluxCost: number;
 }
 
 export interface Building extends Gamepiece {
   buildingType: BuildingType;
+  hpInitial?: number;
 }
 
 export interface Unit extends Gamepiece {
   constructingForm?: Building;
-  mindConrollable?: boolean;
-  infusable?: boolean;
+  canBeInfused?: boolean;
+  canBeReanimated?: boolean;
+  canBeMindControlled?: boolean;
   infusedForm?: Unit;
+  doubleInfusedForm?: Unit;
+  reanimatedAliveForm?: Unit;
+  reanimatedZombieForm?: Unit;
   infuseCost?: number;
+  reanimateCost?: number;
   upgrade: Record<string, Upgrade>;
 }
 
-export interface FactionAbility extends Entity {
+export interface FactionAbility extends ChildEntity {
   activationType: AbilityActivationType;
   subtype: AbilityType;
   hotkey?: HotKey;
@@ -216,7 +255,7 @@ export interface FactionAbility extends Entity {
   energyCost?: number;
   energyType?: EnergyType;
   cooldown?: number;
-  cooldownAtBuild?: number;
+  cooldownAtBuild?: boolean;
   duration?: number;
   range?: number;
   delay?: number;
@@ -247,14 +286,14 @@ export interface FactionAbility extends Entity {
   bonusPercent?: number;
   bonusVsTags?: string[];
   requiresAddOn?: string;
-  autocast: AutoCastMode;
+  autocast?: AutoCastMode;
+  charges?: number;
 }
 
 export interface FactionPassive extends FactionAbility {}
 
 export interface FactionTalent extends FactionAbility {
   level: number;
-  column: number;
 }
 
 export interface FactionTopbar extends FactionAbility {
@@ -266,33 +305,37 @@ export interface Faction extends Entity {
   hero: string[];
   unit: string[];
   building: string[];
-  passive: Record<string, FactionPassive>;
-  talent: Record<string, FactionTalent>;
-  topbar: Record<string, FactionTopbar>;
+  passive?: Record<string, FactionPassive>;
+  talent?: Record<string, FactionTalent>;
+  topbar?: Record<string, FactionTopbar>;
 }
 
 export interface RTSMap extends Entity {
   xpTowers: number;
   fluxDistance: "close" | "near" | "medium-far" | "distant";
-  mapSize: "small" | "medium" | "large";
+  mapSize: "small" | "normal" | "large";
   players: number;
+  inLadderPool: boolean;
 }
 
 export interface CoopMission extends Entity {
-  missionType: MissionType;
+  missionType: CoopMissionType;
 }
 
-export interface CoopLevel extends Entity {
+export interface CoopLevel extends ChildEntity {
   level: number;
-  unlocks: string[];
+  unlocks?: string[];
   levelOf: string;
 }
 
-export interface CoopCommander extends Entity {
+export interface CoopCommander extends Unit {
   unit: string[];
   building: string[];
   commanderLevel: Record<string, CoopLevel>;
   topbar: Record<string, FactionTopbar>;
+  commanderType: CommanderType;
+  //override the type of this to be more specific
+  variantUnit?: Record<string, CoopCommander>;
 }
 
 export type AnyGamepiece = Unit | Building | AddOn;
@@ -303,9 +346,9 @@ export interface MetaReleaseCounts {
   buildings: number;
   factions: number;
   maps: number;
-  talents: number;
-  passives: number;
-  topbars: number;
+  // talents: number;
+  // passives: number;
+  // topbars: number;
   total: number;
 }
 
@@ -333,4 +376,18 @@ export interface MetaIdxSummary {
 export interface MetaIdx {
   all: Record<string, MetaIdxSummary>;
   ids: Record<string, string>;
+}
+
+// class Info { tag: String; label: String; description: String; slug: String; tagged: List<String>; }
+export interface TagInfo {
+  tag: string;
+  slug: string;
+  label: string;
+  description: string;
+}
+export interface TagsInfo {
+  tags: Record<string, TagInfo>;
+}
+export interface TaggedInfo {
+  [key: string]: string[];
 }
