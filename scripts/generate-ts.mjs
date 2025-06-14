@@ -342,7 +342,13 @@ export default {
 }
 
 async function copyTypeDefinitions() {
-  const sourceTypes = path.join(__dirname, "..", "ext", "gg-iolin.d.ts");
+  const sourceTypes = path.join(
+    __dirname,
+    "..",
+    "tooling",
+    "iolin-npm",
+    "gg-iolin.d.ts",
+  );
   const destTypes = path.join(tsDir, "gg-iolin.d.ts");
 
   try {

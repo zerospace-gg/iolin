@@ -42,49 +42,71 @@ all: json pkl-test typescript npm build-report
 
 # Build JSON files
 json: $(JSON_TARGETS) dist/json/gg-iolin.d.ts
+	@echo "📦 JSON files built"
 
 # Build TypeScript files (depends on JSON files being built first)
 typescript: json
-	node scripts/generate-ts.mjs dist
+	@echo "   • TypeScript generation"
+	@node scripts/generate-ts.mjs dist > /dev/null 2>&1
+	@echo "🔧 TypeScript files generated"
 
 # Compile TypeScript to JavaScript (depends on TypeScript files being built first)
-npm: typescript
-	npm run tsc
-	cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts
+npm: typescript dist/npm/package.json
+	@echo "   • TypeScript compilation"
+	@npm run tsc > /dev/null 2>&1
+	@cp dist/typescript/gg-iolin.d.ts dist/npm/gg-iolin.d.ts
+	@echo "📦 NPM package built"
 
 # Pattern rule for JSON files from zerospace
 dist/json/%.json: zerospace/%.pkl
 	@mkdir -p $(dir $@)
-	$(PKL) eval -m dist/json $< -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)"
+	@echo "   • $@"
+	@$(PKL) eval -m dist/json $< -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)" > /dev/null
 
 # Pattern rule for JSON files from meta
 dist/json/%.json: meta/%.pkl
 	@mkdir -p $(dir $@)
-	$(PKL) eval -m dist/json $< -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)"
+	@echo "   • $@"
+	@$(PKL) eval -m dist/json $< -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)" > /dev/null
 
 # Copy TypeScript type definitions
-dist/json/gg-iolin.d.ts: ext/gg-iolin.d.ts
+dist/json/gg-iolin.d.ts: tooling/iolin-npm/gg-iolin.d.ts
 	@mkdir -p $(dir $@)
-	cp -av $< $@
+	@echo "   • $@"
+	@cp $< $@
+
+# Generate package.json for npm package
+dist/npm/package.json: tooling/iolin-npm/npm-pkg.pkl
+	@mkdir -p $(dir $@)
+	@echo "   • $@"
+	@$(PKL) eval -m dist/npm $< -p gg_version="$(GG_VERSION)" -p gg_at="$(AT)" -p gg_ts="$(TS)" > /dev/null
 
 # Run pkl tests
 pkl-test:
-	$(PKL) test
+	@echo "   • pkl tests"
+	@$(PKL) test > /dev/null 2>&1
+	@echo "✅ Tests passed"
 
 # Generate build report
 build-report:
+	@echo "🚀 Build completed"
 	@echo "Release Details:"
 	@jq -C . dist/json/release.json 2>/dev/null || echo "No release.json found"
 
 # Clean distribution directory
 clean:
-	rm -rf dist
-	@echo "Cleaned all distribution directories"
+	@echo "🧹 Cleaning dist directory"
+	@rm -rf dist
+	@echo "✨ Clean completed"
 
 # Clean only npm directory
 clean-npm:
-	rm -rf dist/npm
-	@echo "Cleaned npm distribution directory"
+	@echo "🧹 Cleaning npm directory"
+	@rm -rf dist/npm
+	@echo "✨ NPM clean completed"
 
 # Force rebuild
-force: clean all
+force:
+	@echo "🔄 Force rebuild"
+	@$(MAKE) clean
+	@$(MAKE) all
