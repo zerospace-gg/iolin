@@ -62,13 +62,16 @@ async function testBuild() {
       default: mainModule,
       Tags,
       Release,
-      Idx,
+      IolinIndex,
     } = await import(`file://${path.join(process.cwd(), "dist/npm/index.js")}`);
 
     console.log("✅ Successfully imported main module");
     console.log("✅ Main module exports:", Object.keys(mainModule));
     console.log("✅ Release version:", Release.ggVersion);
-    console.log("✅ Total entities in index:", Object.keys(Idx.all).length);
+    console.log(
+      "✅ Total entities in index:",
+      Object.keys(IolinIndex.all).length,
+    );
   } catch (error) {
     console.error("❌ Failed to import main module:", error.message);
     process.exit(1);
