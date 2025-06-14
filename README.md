@@ -7,7 +7,7 @@ A comprehensive data processing engine for [ZeroSpace](https://playzerospace.com
 iolin is a [Pkl](https://pkl-lang.org/)-based data engine that extracts, validates, and transforms ZeroSpace game data into multiple formats for community use. It generates:
 
 - **JSON data files** for web applications and APIs
-- **TypeScript modules** with full type safety for JavaScript/Node.js projects  
+- **TypeScript modules** with full type safety for JavaScript/Node.js projects
 - **NPM package** (`@zerospacegg/iolin`) for easy integration
 
 ## Quick Start
@@ -19,15 +19,18 @@ npm install @zerospacegg/iolin
 ```
 
 ```typescript
+import { IolinIndex } from '@zerospacegg/iolin';
 import { loadUnit, loadBuilding, Units, Buildings } from '@zerospacegg/iolin/all';
 
 // Load specific entities
-const marine = loadUnit('terran-marine');
-const barracks = loadBuilding('terran-barracks');
+const commando = loadUnit('faction/protectorate/unit/commando');
+const barracks = loadBuilding('faction/protectorate/building/prot-barracks');
 
 // Access all collections
 console.log(Object.keys(Units)); // All unit IDs
-console.log(Buildings['terran-command-center']); // Specific building data
+console.log(Buildings['faction/protectorate/building/operating-tower']); // Specific building data
+// load an entity's metadata from the index.
+console.log(IolinIndex.all['faction/protectorate/commander/mera-coop'])
 ```
 
 ### Development Setup
@@ -117,7 +120,7 @@ interface Unit {
 Entity types include:
 - **Units** - All game units (marines, workers, etc.)
 - **Buildings** - Structures and production facilities
-- **Factions** - Playable factions (Terran, Zerg, etc.)
+- **Factions** - Playable factions (Protectorate, Grell, Legion, Xol), as well as mercenary and non-player factions
 - **Abilities** - Unit and faction abilities
 - **Maps** - Multiplayer and campaign maps
 - **Upgrades** - Research upgrades
