@@ -97,31 +97,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Update PklProject with new version
+      - name: Show version info
         run: |
           VERSION=${{ needs.check-version.outputs.next-version }}
-          echo "Updating PklProject version to: $VERSION"
+          CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
 
-          # Update the version in PklProject
-          sed -i "s/version = \"[^\"]*\"/version = \"$VERSION\"/" PklProject
+          echo "PklProject version: $CURRENT_VERSION"
+          echo "Release version: $VERSION"
+          echo "Note: Using git tag for Pkl package versioning"
 
-          # Verify the change
-          echo "Updated PklProject version:"
-          pkl eval PklProject -x package.version
-
-      - name: Commit version bump
-        run: |
-          VERSION=${{ needs.check-version.outputs.next-version }}
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git add PklProject
-          git commit -m "Bump version to $VERSION [skip ci]"
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build project
+      - name: Run full CI process
         run: just all
+
+      - name: Run build tests
+        run: just test-build
 
       - name: Verify build integrity
         run: just verify
