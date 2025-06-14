@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   check-version:
     name: Check Version and Release
@@ -171,16 +175,21 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.check-version.outputs.next-version }}
           name: Release ${{ needs.check-version.outputs.next-version }}
-          body: Release ${{ needs.check-version.outputs.next-version }}
+          body: |
+            ## Release ${{ needs.check-version.outputs.next-version }}
+
+            ### What's included:
+            - 📦 Pkl package (`iolin-${{ needs.check-version.outputs.next-version }}.zip`)
+            - 📊 JSON data bundle (`json-data-${{ needs.check-version.outputs.next-version }}.zip`)
+            - 📚 NPM package published as `@zerospacegg/iolin@${{ needs.check-version.outputs.next-version }}`
           files: release-artifacts/*
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release Summary
         run: |
