@@ -1,4 +1,12 @@
 amends "pkl:project"
+
+package {
+  name = "iolin"
+  version = "0.8.4"
+  baseUri = "package://github.com/zerospace-gg/iolin"
+  packageZipUrl = "https://github.com/zerospace-gg/iolin/releases/download/\(version)/iolin-\(version).zip"
+}
+
 tests {
   ...import*("tests/**.pkl").keys
 }

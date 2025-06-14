@@ -1,0 +1,274 @@
+/// Base PackageJson module with types based on the official JSON Schema
+/// This provides a well-typed foundation for generating package.json files
+
+typealias Person = String|PersonObject
+
+class PersonObject {
+  name: String
+  url: String?
+  email: String?
+}
+
+class Repository {
+  type: String
+  url: String
+  directory: String?
+}
+
+class Bugs {
+  url: String?
+  email: String?
+}
+
+class Engines {
+  node: String?
+  npm: String?
+  yarn: String?
+  pnpm: String?
+}
+
+class PublishConfig {
+  access: ("public"|"restricted")?
+  tag: String?
+  registry: String?
+  provenance: Boolean?
+}
+
+class Scripts {
+  build: String?
+  start: String?
+  test: String?
+  dev: String?
+  lint: String?
+  prepare: String?
+  prepublish: String?
+  prepublishOnly: String?
+  prepack: String?
+  postpack: String?
+  preinstall: String?
+  install: String?
+  postinstall: String?
+  preuninstall: String?
+  uninstall: String?
+  postuninstall: String?
+  preversion: String?
+  version: String?
+  postversion: String?
+  pretest: String?
+  posttest: String?
+  prestop: String?
+  stop: String?
+  poststop: String?
+  prestart: String?
+  poststart: String?
+  prerestart: String?
+  restart: String?
+  postrestart: String?
+  serve: String?
+}
+
+/// Main PackageJson class with all standard fields
+class PackageJson {
+  /// The name of the package
+  name: String?
+
+  /// Version must be parsable by node-semver
+  version: String?
+
+  /// This helps people discover your package, as it's listed in 'npm search'
+  description: String?
+
+  /// This helps people discover your package as it's listed in 'npm search'
+  keywords: Listing<String>?
+
+  /// The url to the project homepage
+  homepage: String?
+
+  /// The url to your project's issue tracker and / or the email address to which issues should be reported
+  bugs: (Bugs|String)?
+
+  /// You should specify a license for your package so that people know how they are permitted to use it
+  license: String?
+
+  /// The author of this package
+  author: Person?
+
+  /// A list of people who contributed to this package
+  contributors: Listing<Person>?
+
+  /// A list of people who maintains this package
+  maintainers: Listing<Person>?
+
+  /// The 'files' field is an array of files to include in your project
+  files: Listing<String>?
+
+  /// The main field is a module ID that is the primary entry point to your program
+  main: String?
+
+  /// Set the types property to point to your bundled declaration file
+  types: String?
+
+  /// Note that the "typings" field is synonymous with "types", and could be used as well
+  typings: String?
+
+  /// When set to "module", the type field allows a package to specify all .js files within are ES modules
+  type: ("commonjs"|"module")?
+
+  /// Specify either a single file or an array of filenames to put in place for the man program to find
+  man: (String|Listing<String>)?
+
+  /// Specify the place where your code lives
+  repository: (Repository|String)?
+
+  /// The 'scripts' member is an object hash of script commands that are run at various times in the lifecycle of your package
+  scripts: Scripts?
+
+  /// A 'config' hash can be used to set configuration parameters used in package scripts that persist across upgrades
+  config: Mapping<String, Any>?
+
+  /// Dependencies are specified with a simple hash of package name to version range
+  dependencies: Mapping<String, String>?
+
+  /// Specifies dependencies that are required for the development and testing of the project
+  devDependencies: Mapping<String, String>?
+
+  /// Specifies dependencies that are optional for your project
+  optionalDependencies: Mapping<String, String>?
+
+  /// Specifies dependencies that are required by the package but are expected to be provided by the consumer of the package
+  peerDependencies: Mapping<String, String>?
+
+  /// Array of package names that will be bundled when publishing the package
+  bundleDependencies: (Listing<String>|Boolean)?
+
+  /// You can specify the version of node that your stuff works on
+  engines: Engines?
+
+  /// If set to true, then npm will refuse to publish it
+  private: Boolean?
+
+  /// This is a set of config values that will be used at publish-time
+  publishConfig: PublishConfig?
+
+  /// Specify which operating systems your module will run on
+  os: Listing<String>?
+
+  /// Specify that your code only runs on certain cpu architectures
+  cpu: Listing<String>?
+
+  /// DEPRECATED: This option used to trigger an npm warning, but it will no longer warn
+  preferGlobal: Boolean?
+
+  /// An ECMAScript module ID that is the primary entry point to your program
+  esModule: String?
+
+  /// Allows packages within a directory to depend on one another using direct linking of local files
+  workspaces: (Listing<String>|Mapping<String, Any>)?
+}
+
+/// The name of the package
+name: String?
+
+/// Version must be parsable by node-semver
+version: String?
+
+/// This helps people discover your package, as it's listed in 'npm search'
+description: String?
+
+/// This helps people discover your package as it's listed in 'npm search'
+keywords: Listing<String>?
+
+/// The url to the project homepage
+homepage: String?
+
+/// The url to your project's issue tracker and / or the email address to which issues should be reported
+bugs: (Bugs|String)?
+
+/// You should specify a license for your package so that people know how they are permitted to use it
+license: String?
+
+/// The author of this package
+author: Person?
+
+/// A list of people who contributed to this package
+contributors: Listing<Person>?
+
+/// A list of people who maintains this package
+maintainers: Listing<Person>?
+
+/// The 'files' field is an array of files to include in your project
+files: Listing<String>?
+
+/// The main field is a module ID that is the primary entry point to your program
+main: String?
+
+/// Set the types property to point to your bundled declaration file
+types: String?
+
+/// Note that the "typings" field is synonymous with "types", and could be used as well
+typings: String?
+
+/// When set to "module", the type field allows a package to specify all .js files within are ES modules
+type: ("commonjs"|"module")?
+
+/// Specify either a single file or an array of filenames to put in place for the man program to find
+man: (String|Listing<String>)?
+
+/// Specify the place where your code lives
+repository: (Repository|String)?
+
+/// The 'scripts' member is an object hash of script commands that are run at various times in the lifecycle of your package
+scripts: Scripts?
+
+/// A 'config' hash can be used to set configuration parameters used in package scripts that persist across upgrades
+config: Mapping<String, Any>?
+
+/// Dependencies are specified with a simple hash of package name to version range
+dependencies: Mapping<String, String>?
+
+/// Specifies dependencies that are required for the development and testing of the project
+devDependencies: Mapping<String, String>?
+
+/// Specifies dependencies that are optional for your project
+optionalDependencies: Mapping<String, String>?
+
+/// Specifies dependencies that are required by the package but are expected to be provided by the consumer of the package
+peerDependencies: Mapping<String, String>?
+
+/// Array of package names that will be bundled when publishing the package
+bundleDependencies: (Listing<String>|Boolean)?
+
+/// You can specify the version of node that your stuff works on
+engines: Engines?
+
+/// If set to true, then npm will refuse to publish it
+private: Boolean?
+
+/// This is a set of config values that will be used at publish-time
+publishConfig: PublishConfig?
+
+/// Specify which operating systems your module will run on
+os: Listing<String>?
+
+/// Specify that your code only runs on certain cpu architectures
+cpu: Listing<String>?
+
+/// DEPRECATED: This option used to trigger an npm warning, but it will no longer warn
+preferGlobal: Boolean?
+
+/// An ECMAScript module ID that is the primary entry point to your program
+esModule: String?
+
+/// Allows packages within a directory to depend on one another using direct linking of local files
+workspaces: (Listing<String>|Mapping<String, Any>)?
+
+/// Generate output with proper JSON formatting
+local methis = this
+hidden output {
+  files {
+    ["package.json"] {
+      renderer = new JsonRenderer { indent = "  " }
+      value = methis
+    }
+  }
+}

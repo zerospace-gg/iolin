@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pkl
+        uses: pkl-community/setup-pkl@v0
+        with:
+          pkl-version: "0.26.3"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install just
+        uses: extractions/setup-just@v1
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build and test
+        run: just all
+
+      - name: Run tests
+        run: just test-build
+
+      - name: Verify build integrity
+        run: just verify
+
+      - name: Show build statistics
+        run: just stats

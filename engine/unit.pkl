@@ -12,12 +12,17 @@ local meref = reflect.moduleOf(this)
 
 fixed type = "unit"
 fixed subtype: String = unitType
-unitType: "army" | "hero" | "coop-commander" | "harvester" | "builder" | "special" | "ultimate" | "merc" | "merc-topbar" | "mobile-merc-outpost"
+hidden unitType: "army" | "hero" | "coop-commander" | "harvester" | "builder" | "special" | "ultimate" | "merc" | "merc-topbar" | "mobile-merc-outpost"
 
 fixed dynamicTags {
-  when (methis.infusable) { "infusable" }
-  when (methis.mindControllable) { "mind-controllable" }
+  when (methis.canBeInfused) { "can-be-infused" }
+  when (methis.canBeReanimated) { "can-be-reanimated" }
+  when (methis.canBeMindControlled) { "can-be-mind-controlled" }
 }
+
+canBeInfused: Boolean = subtype == "army" || subtype == "merc" && !tags.toList().contains("massive")
+canBeReanimated: Boolean = subtype == "army" || subtype == "merc" || subtype == "hero"
+canBeMindControlled: Boolean = subtype != "hero"
 
 hidden constructingVersion: Listing<ConstructingUnit> = new {
   default { key -> name = $t.makeSlug(key); parent = parentInfo; }
@@ -25,14 +30,17 @@ hidden constructingVersion: Listing<ConstructingUnit> = new {
 
 vision: Number? = 1800
 
-infusable: Boolean = subtype == "army" || subtype == "merc" && !tags.toList().contains("massive")
-mindControllable: Boolean = subtype != "hero"
-
-variants {
-  when (infusable) {
+variantUnits {
+  when (canBeInfused) {
     ["\(methis.name) (Infused)"] = infusedForm
     ["\(methis.name) (Double Infused)"] = doubleInfusedForm
   }
+  when (canBeReanimated) {
+    ["\(methis.name) (Reanimated: Alive)"] = reanimatedAliveForm
+    ["\(methis.name) (Reanimated: Zombie)"] = reanimatedZombieForm
+  }
+}
+variantBuildings {
   when (constructingVersion.toList().length > 0) {
     ["\(methis.name) (Constructing)"] = constructingVersion.toList().first
   }
@@ -70,32 +78,94 @@ hidden doubleInfuseRule: Mixin<me> = new {
   }
 }
 
+hidden reanimatedAliveRule: Mixin<me> = new {
+  appendSlug = "-reanimated-alive"
+  name = "\(super.name) (Reanimated: Alive)"
+  speed = if (super.speed == null) null else super.speed * 1.3;
+
+  abilities {
+    for (nm, x in (super.abilities)) {
+      [nm] = (x) {
+        when ((x.abilityType == "attack" || x.abilityType == "heal") && x.cooldown != null) {
+          cooldown = (x.cooldown ?? 0) * 0.7;
+        }
+      }
+    }
+  }
+}
+
+hidden reanimatedZombieRule: Mixin<me> = new {
+  appendSlug = "-reanimated-zombie"
+  name = "\(super.name) (Reanimated: Zombie)"
+  speed = if (super.speed == null) null else super.speed / 0.7;
+
+  abilities {
+    for (nm, x in (super.abilities)) {
+      [nm] = (x) {
+        when ((x.abilityType == "attack" || x.abilityType == "heal") && x.cooldown != null) {
+          cooldown = (x.cooldown ?? 0) / 1.3;
+        }
+      }
+    }
+  }
+}
+
 hidden fixed infusedForm: me? =
-  if (tagList.toList().contains("infused") || !infusable)
+  if (tagList.toList().contains("infused") || !canBeInfused)
     null
   else
     (this |> infuseRule) {
-      infusable = false
+      canBeInfused = false
       infuseCost = null
       infuseRule = null
-      variants {}
+      variantUnits {}
+      variantBuildings {}
       tags { "infused" }
   }
 
 hidden fixed doubleInfusedForm: me? =
-  if (tagList.toList().contains("double-infused") || !infusable)
+  if (tagList.toList().contains("double-infused") || !canBeInfused)
     null
   else
     (this |> doubleInfuseRule) {
-      infusable = false
+      canBeInfused = false
       infuseCost = null
       infuseRule = null
-      variants {}
+      variantUnits {}
+      variantBuildings {}
       tags { "infused"; "double-infused" }
   }
 
-darkBlessingCost: Number? =
-  if (!infusable)
+hidden fixed reanimatedAliveForm: me? =
+  if (tagList.toList().contains("reanimated-alive") || tagList.toList().contains("reanimated-zombie") || !canBeReanimated)
+    null
+  else
+    (this |> reanimatedAliveRule) {
+      canBeReanimated = false
+      reanimateCost = null
+      reanimatedAliveRule = null
+      reanimatedZombieRule = null
+      variantUnits {}
+      variantBuildings {}
+      tags { "reanimated-alive" }
+    }
+
+hidden fixed reanimatedZombieForm: me? =
+  if (tagList.toList().contains("reanimated-zombie") || tagList.toList().contains("reanimated-alive") || !canBeReanimated)
+    null
+  else
+    (this |> reanimatedZombieRule) {
+      canBeReanimated = false
+      reanimateCost = null
+      reanimatedAliveRule = null
+      reanimatedZombieRule = null
+      variantUnits {}
+      variantBuildings {}
+      tags { "reanimated-zombie" }
+    }
+
+reanimateCost: Number? =
+  if (!canBeReanimated)
     null
   else
     let (h = (hexiteCost ?? 0))
@@ -104,7 +174,7 @@ darkBlessingCost: Number? =
     (n * 10).round() / 10
 
 infuseCost: Number? =
-  if (!infusable)
+  if (!canBeInfused)
     null
   else
     let (s = (supply ?? 0))

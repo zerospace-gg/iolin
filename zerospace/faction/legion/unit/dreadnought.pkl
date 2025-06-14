@@ -19,6 +19,8 @@ buildTime = 30
 domain = "air"
 infuseCost = 100
 
+tags { "massive" }
+
 constructingVersion {
   new {
     name = "Dreadnought (Constructing)"
@@ -37,8 +39,6 @@ abilities {
     damage = 9
     cooldown = 0.5
     range = 1100
-    bonusPercent = 100
-    bonusVsTags { "armor:heavy" }
     abilityType = "attack"
     targets { "air"; "ground" }
   }
@@ -68,11 +68,11 @@ abilities {
 }
 
 
-maxAddOns = 4
+maxAddOns = 2
 addOns {
   default {
-    fluxCost = 150
-    buildTime = 25
+    fluxCost = 100
+    buildTime = 20
     hp = 225
     armorType = "heavy"
     addOnType = "turret"
@@ -86,8 +86,8 @@ addOns {
     unlocks { me.abilities["Teleport"].slug; me.abilities["Sensor"].slug }
     uuid = "9154c6c5-1f18-4b62-9f62-7f960ebc2571"
   }
-  ["Beam Module"] {
-    description = "Each \(name) adds +30% damage and 100 range to \(me.name)'s \(me.abilities["Main Beam Weapon"].name) attack. Main beam dmg: 5/7/8/10/11 for 0/1/2/3/4."
+  ["Shield Generator"] {
+    description = "Dreadnought shield generator"
     uuid = "151249d4-2f0b-4b09-9667-86d22310cc6e"
   }
   ["Anti-Air Turret"] {

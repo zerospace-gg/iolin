@@ -17,7 +17,7 @@ fixed slug: $t.Slug =
   "\(parent.slug)-\(subtype)-\(subSlug)\(appendSlug)"
 
 // fixed id: $t.Id = "\(parent.id)/\(subtype)/\(slug)"
-fixed belongsTo: String = parent.slug
+hidden fixed belongsTo: String = parent.slug
 
 fixed faction: String? = parent.fromPath.faction
 fixed factionType: String? = parent.fromPath.factionType

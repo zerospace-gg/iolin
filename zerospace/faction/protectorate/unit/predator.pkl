@@ -11,16 +11,18 @@ createdBy { import("../building/factory.pkl").slug }
 upgradedBy { import("../building/mechanical_research_lab.pkl").slug }
 unlockedBy { import("../building/factory.pkl").slug }
 
-hp = 225
+hp = 150
 armorType = "light"
-speed = 700
+speed = 900
 
 abilities {
   ["Attack"] {
     damage = 15
     volleys = 2
     cooldown = 1.6
-    range = 800
+    range = 650
+    bonusPercent = 50
+    bonusVsTags { "armor:medium" }
     targets { "ground" }
     abilityType = "attack"
   }
@@ -34,8 +36,15 @@ abilities {
 
 
 upgrades {
-  ["HEAT"] {
-    description = "+50% damage against heavy targets"
+  ["Bonus Shield"] {
+    description = "Gain 100 shields"
+    tier = "T2.5"
+    fluxCost = 100
+    researchTime = 50
+  }
+
+  ["Chaser Mine"] {
+    description = "Unlocks chaser mine ability"
     tier = "T2.5"
     fluxCost = 100
     researchTime = 40

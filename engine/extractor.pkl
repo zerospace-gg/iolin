@@ -5,5 +5,5 @@ hp = 225
 armor = 0
 buildTime = 35
 gathersHexite = 1.4
-gathersEmptyHexite = 0.56
+gathersEmptyHexite = 0.35
 tier = "T0"

@@ -25,6 +25,8 @@ abilities {
     cooldown = 1.37
     range = 120
     abilityType = "attack"
+    bonusPercent = 50
+    bonusVsTags { "armor:light" }
   }
 }
 
@@ -36,13 +38,13 @@ upgrades {
     tier = "T1.5"
   }
   ["Saw"] {
-    description = "+60% damage against light armor"
+    description = "Additional +100% damage against light armor"
     fluxCost = 100
     researchTime = 40
     tier = "T1.5"
   }
   ["Performance Enhancers"] {
-    description = "+15% Attack and Move Speed"
+    description = "+30% movement speed"
     fluxCost = 150
     researchTime = 50
     tier = "T2.5"

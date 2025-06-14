@@ -20,11 +20,12 @@ addOns {
     hexiteCost = 200
     buildTime = 5
     addOnType = "building-turret"
+    hp = 500
     abilities {
       ["Attack"] {
-        damage = 20
-        cooldown = 0.4
-        range = 2100
+        damage = 16
+        cooldown = 0.45
+        range = 1950
         abilityType = "attack"
         targets { "ground"; "air" }
       }
