@@ -1,7 +1,9 @@
-name: Release
+name: Build and Release
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
 permissions:
@@ -9,8 +11,8 @@ permissions:
   packages: write
 
 jobs:
-  check-version:
-    name: Check Version and Release
+  build-and-test:
+    name: Build and Test
     runs-on: ubuntu-latest
     outputs:
       should-release: ${{ steps.version-check.outputs.should-release }}
@@ -25,8 +27,33 @@ jobs:
         with:
           pkl-version: "0.26.3"
 
-      - name: Check and bump version
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install just
+        uses: extractions/setup-just@v1
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build and test
+        run: just all
+
+      - name: Run tests
+        run: just test-build
+
+      - name: Verify build integrity
+        run: just verify
+
+      - name: Show build statistics
+        run: just stats
+
+      - name: Check version for release (main branch only)
         id: version-check
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           # Get current version from PklProject
           CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
@@ -74,11 +101,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  build-and-release:
-    name: Build and Release
+  release:
+    name: Create Release
     runs-on: ubuntu-latest
-    needs: check-version
-    if: ${{ needs.check-version.outputs.should-release == 'true' }}
+    needs: build-and-test
+    if: needs.build-and-test.outputs.should-release == 'true'
 
     steps:
       - name: Checkout code
@@ -103,40 +130,52 @@ jobs:
 
       - name: Update PklProject version
         run: |
-          VERSION=${{ needs.check-version.outputs.next-version }}
+          VERSION=${{ needs.build-and-test.outputs.next-version }}
           CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
 
           echo "PklProject version: $CURRENT_VERSION"
           echo "Release version: $VERSION"
           echo "Note: Using git tag for Pkl package versioning"
 
-          # Update the version in PklProject file directly
-          sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$VERSION\"/" PklProject
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            echo "⚠️ Version mismatch detected - updating PklProject..."
 
-          # Verify the change
-          NEW_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
-          if [ "$NEW_VERSION" != "$VERSION" ]; then
-            echo "❌ Failed to update version in PklProject"
-            exit 1
+            # Create backup of original file
+            cp PklProject PklProject.bak
+
+            # Update the version in PklProject file directly
+            sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$VERSION\"/" PklProject
+
+            # Verify the change
+            NEW_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
+            if [ "$NEW_VERSION" != "$VERSION" ]; then
+              echo "❌ Failed to update version in PklProject"
+              echo "Old version: $CURRENT_VERSION"
+              echo "Expected new version: $VERSION"
+              echo "Actual new version: $NEW_VERSION"
+              echo "Restoring backup..."
+              mv PklProject.bak PklProject
+              exit 1
+            fi
+
+            echo "✅ Successfully updated PklProject version to $VERSION"
+            rm PklProject.bak
+          else
+            echo "✅ PklProject version already matches release version"
           fi
 
-          echo "✅ Successfully updated PklProject version to $VERSION"
+      - name: Build release packages
+        run: just dist
 
-      - name: Run full CI process
-        run: just all
-
-      - name: Run build tests
+      - name: Run final tests
         run: just test-build
 
-      - name: Verify build integrity
+      - name: Verify release build
         run: just verify
-
-      - name: Show build statistics
-        run: just stats
 
       - name: Prepare release artifacts
         run: |
-          VERSION=${{ needs.check-version.outputs.next-version }}
+          VERSION=${{ needs.build-and-test.outputs.next-version }}
 
           # Create release directory
           mkdir -p release-artifacts
@@ -179,7 +218,7 @@ jobs:
           cd dist/npm
           echo "🚀 Publishing @zerospacegg/iolin to npm"
           echo "Package: @zerospacegg/iolin"
-          echo "Version: ${{ needs.check-version.outputs.next-version }}"
+          echo "Version: ${{ needs.build-and-test.outputs.next-version }}"
           echo "Registry: https://registry.npmjs.org"
           npm publish --access public
           echo "✅ Successfully published to npm!"
@@ -189,15 +228,21 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ needs.check-version.outputs.next-version }}
-          name: Release ${{ needs.check-version.outputs.next-version }}
+          tag_name: ${{ needs.build-and-test.outputs.next-version }}
+          name: Release ${{ needs.build-and-test.outputs.next-version }}
           body: |
-            ## Release ${{ needs.check-version.outputs.next-version }}
+            ## Release ${{ needs.build-and-test.outputs.next-version }}
 
             ### What's included:
-            - 📦 Pkl package (`iolin-${{ needs.check-version.outputs.next-version }}.zip`)
-            - 📊 JSON data bundle (`json-data-${{ needs.check-version.outputs.next-version }}.zip`)
-            - 📚 NPM package published as `@zerospacegg/iolin@${{ needs.check-version.outputs.next-version }}`
+            - 📦 Pkl package (`iolin-${{ needs.build-and-test.outputs.next-version }}.zip`)
+            - 📊 JSON data bundle (`json-data-${{ needs.build-and-test.outputs.next-version }}.zip`)
+            - 📚 NPM package published as `@zerospacegg/iolin@${{ needs.build-and-test.outputs.next-version }}`
+
+            ### Package Details:
+            - **Type**: ES Module (ESM)
+            - **Node.js**: >=16.0.0
+            - **Installation**: `npm install @zerospacegg/iolin`
+            - **Usage**: `import { Units, Buildings, Factions } from '@zerospacegg/iolin';`
           files: release-artifacts/*
           draft: false
           prerelease: false
@@ -205,8 +250,8 @@ jobs:
 
       - name: Release Summary
         run: |
-          echo "✅ Release ${{ needs.check-version.outputs.next-version }} created successfully!"
+          echo "✅ Release ${{ needs.build-and-test.outputs.next-version }} created successfully!"
           echo "📦 Artifacts included:"
-          echo "  - iolin-${{ needs.check-version.outputs.next-version }}.zip (Pkl package)"
-          echo "  - json-data-${{ needs.check-version.outputs.next-version }}.zip (JSON data bundle)"
-          echo "  - @zerospacegg/iolin@${{ needs.check-version.outputs.next-version }} (published to npm)"
+          echo "  - iolin-${{ needs.build-and-test.outputs.next-version }}.zip (Pkl package)"
+          echo "  - json-data-${{ needs.build-and-test.outputs.next-version }}.zip (JSON data bundle)"
+          echo "  - @zerospacegg/iolin@${{ needs.build-and-test.outputs.next-version }} (published to npm)"

@@ -28,7 +28,7 @@ json:
 # Generate TypeScript files (depends on JSON files)
 typescript: json
     @echo "🔧 Generating TypeScript files"
-    @node scripts/generate-ts.mjs dist > /dev/null
+    @node tooling/build/generate-ts.mjs dist > /dev/null
     @# Verify TypeScript files were actually generated
     @if [ ! -f "dist/typescript/index.ts" ]; then echo "❌ ERROR: TypeScript generation failed - no index.ts generated"; exit 1; fi
     @if [ ! -f "dist/typescript/gg-iolin.d.ts" ]; then echo "❌ ERROR: TypeScript generation failed - no type definitions copied"; exit 1; fi
@@ -75,12 +75,14 @@ build-report:
     @echo "Release Details:"
     @if [ -f "dist/json/release.json" ]; then jq -C . dist/json/release.json; else echo "⚠️  Warning: No release.json found"; fi
 
-
 # Run build verification tests
 test-build:
     @echo "🧪 Running build verification tests"
-    @node scripts/test-build.mjs
-    @echo "✅ Build tests passed"# Clean all build artifacts
+    @node tooling/build/test-build.mjs
+    @echo "✅ Build tests passed"
+
+# Clean all build artifacts
+
 clean:
     @echo "🧹 Cleaning dist directory"
     @rm -rf dist
