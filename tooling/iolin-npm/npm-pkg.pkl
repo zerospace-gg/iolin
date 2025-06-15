@@ -1,4 +1,4 @@
-amends "PackageJson.pkl"
+amends "PackageJson"
 import "../../PklProject" as project
 import "PackageJson.pkl" as PJ
 
@@ -7,6 +7,7 @@ version = project.package.version
 description = "Community ZeroSpace game data library - units, buildings, abilities, and more"
 main = "index.js"
 types = "index.d.ts"
+type = "module"
 files = new Listing {
   "**/*.js"
   "**/*.d.ts"

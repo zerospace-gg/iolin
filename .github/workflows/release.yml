@@ -101,7 +101,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Show version info
+      - name: Update PklProject version
         run: |
           VERSION=${{ needs.check-version.outputs.next-version }}
           CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
@@ -109,6 +109,18 @@ jobs:
           echo "PklProject version: $CURRENT_VERSION"
           echo "Release version: $VERSION"
           echo "Note: Using git tag for Pkl package versioning"
+
+          # Update the version in PklProject file directly
+          sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$VERSION\"/" PklProject
+
+          # Verify the change
+          NEW_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
+          if [ "$NEW_VERSION" != "$VERSION" ]; then
+            echo "❌ Failed to update version in PklProject"
+            exit 1
+          fi
+
+          echo "✅ Successfully updated PklProject version to $VERSION"
 
       - name: Run full CI process
         run: just all

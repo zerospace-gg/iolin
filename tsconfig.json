@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "lib": ["ES2020"],
     "outDir": "./dist/npm",
     "rootDir": "./dist/typescript",
@@ -21,13 +21,6 @@
     "noUncheckedIndexedAccess": false,
     "exactOptionalPropertyTypes": false
   },
-  "include": [
-    "dist/typescript/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist/npm",
-    "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+  "include": ["dist/typescript/**/*"],
+  "exclude": ["node_modules", "dist/npm", "**/*.test.ts", "**/*.spec.ts"]
 }
