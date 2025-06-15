@@ -1,4 +1,4 @@
-amends "PackageJson"
+amends "PackageJson.pkl"
 import "../../PklProject" as project
 import "PackageJson.pkl" as PJ
 
