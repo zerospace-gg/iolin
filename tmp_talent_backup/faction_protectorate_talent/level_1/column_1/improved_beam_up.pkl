@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Improved Beam Up"
-description = "-25% Beam up delay, +100% healed amount"

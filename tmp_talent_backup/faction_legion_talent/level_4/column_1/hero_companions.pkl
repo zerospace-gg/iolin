@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Hero Companions"
-description = "(UNFINISHED) Each hero gains a companion drone."

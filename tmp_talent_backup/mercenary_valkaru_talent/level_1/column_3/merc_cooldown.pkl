@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Merc Cooldown"
-description = "-50% mercenary production cooldown"

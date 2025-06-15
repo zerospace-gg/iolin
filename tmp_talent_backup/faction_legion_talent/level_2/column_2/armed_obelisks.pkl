@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Armed Obelisks"
-description = "Obelisks have an additional weapon (10 DPS)"

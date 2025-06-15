@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Lifesteal"
-description = "+7% lifesteal to all units"

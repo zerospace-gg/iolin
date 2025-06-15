@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Reused Equipment"
-description = "Thralls refund 25% of their cost on death."

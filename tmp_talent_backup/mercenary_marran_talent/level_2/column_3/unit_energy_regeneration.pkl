@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Unit energy regeneration"
-description = "+100% unit energy regeneration"

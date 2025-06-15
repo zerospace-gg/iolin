@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Cloak Buff"
-description = "+25% damage and movement speed for cloaked units"

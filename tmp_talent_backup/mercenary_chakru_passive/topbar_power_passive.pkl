@@ -1,3 +1,0 @@
-amends ".../engine/faction_passive.pkl"
-name = "TopBar Power"
-description = "+25% topbar power gained from units and structures"
