@@ -17,6 +17,7 @@ jobs:
     outputs:
       should-release: ${{ steps.version-check.outputs.should-release }}
       next-version: ${{ steps.version-check.outputs.next-version }}
+      data-changed: ${{ steps.changes.outputs.data-changed }}
 
     steps:
       - name: Checkout code
@@ -51,9 +52,78 @@ jobs:
       - name: Show build statistics
         run: just stats
 
+      - name: Check for data file changes
+        id: changes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          # Fetch enough history to compare (in case of shallow clone)
+          git fetch --depth=2 origin main
+
+          # Get the list of changed files
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            # Normal case: compare with previous commit
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+            COMPARISON="HEAD~1..HEAD"
+          else
+            # Edge case: first commit in repo
+            CHANGED_FILES=$(git ls-tree --name-only -r HEAD)
+            COMPARISON="initial commit"
+          fi
+
+          echo "📁 Checking changes in: $COMPARISON"
+          echo "Changed files:"
+          echo "$CHANGED_FILES" | sed 's/^/  /'
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "⚠️ No changed files detected"
+            echo "data-changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Define data file patterns that should trigger a release
+          # These patterns match files that contain actual game data or configuration:
+          # - engine/: Core game engine data structures
+          # - meta/: Metadata and indexes
+          # - zerospace/: Game content (units, buildings, factions, etc.)
+          # - PklProject: Main project configuration
+          # - version.pkl: Version configuration
+          DATA_PATTERNS="^(engine/|meta/|zerospace/|PklProject$|version\.pkl$)"
+
+          echo ""
+          echo "🔍 Checking for data file changes..."
+
+          # Check if any changed files match our data patterns
+          DATA_CHANGED=false
+          DATA_FILES=""
+          NON_DATA_FILES=""
+
+          for file in $CHANGED_FILES; do
+            if echo "$file" | grep -qE "$DATA_PATTERNS"; then
+              echo "  ✅ Data file: $file"
+              DATA_CHANGED=true
+              DATA_FILES="$DATA_FILES$file\n"
+            else
+              echo "  ⏭️  Non-data file: $file"
+              NON_DATA_FILES="$NON_DATA_FILES$file\n"
+            fi
+          done
+
+          echo ""
+          if [ "$DATA_CHANGED" = "true" ]; then
+            echo "data-changed=true" >> $GITHUB_OUTPUT
+            echo "✅ DATA FILES CHANGED - Release candidate"
+            echo "Data files that changed:"
+            printf "$DATA_FILES" | sed 's/^/  - /'
+          else
+            echo "data-changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ NO DATA FILES CHANGED - Skipping release"
+            echo "Only non-data files changed:"
+            printf "$NON_DATA_FILES" | sed 's/^/  - /'
+          fi
+
       - name: Check version for release (main branch only)
         id: version-check
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.changes.outputs.data-changed == 'true'
         run: |
           # Get current version from PklProject
           CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
@@ -101,11 +171,57 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Release Decision Summary
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          DATA_CHANGED="${{ steps.changes.outputs.data-changed }}"
+          SHOULD_RELEASE="${{ steps.version-check.outputs.should-release }}"
+
+          echo "🔍 Release Decision Summary:"
+          echo "=========================="
+          echo "Data files changed: $DATA_CHANGED"
+          echo "Should release: $SHOULD_RELEASE"
+          echo ""
+
+          if [ "$DATA_CHANGED" = "true" ] && [ "$SHOULD_RELEASE" = "true" ]; then
+            echo "✅ RELEASING: Data changed and version bump needed"
+            echo "   → NPM package will be published"
+            echo "   → GitHub release will be created"
+          elif [ "$DATA_CHANGED" = "false" ]; then
+            echo "⏭️  SKIPPING: No data files changed (tooling/docs only)"
+            echo "   → Changes don't affect game data"
+            echo "   → No release needed"
+          elif [ "$SHOULD_RELEASE" = "false" ]; then
+            echo "⏭️  SKIPPING: No version change needed"
+            echo "   → Data changed but version is same as latest release"
+          else
+            echo "❓ UNKNOWN: Unexpected state"
+          fi
+
+      - name: Data Change Analysis (when no release)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.changes.outputs.data-changed == 'true' && steps.version-check.outputs.should-release != 'true'
+        run: |
+          echo "📊 Data files changed but no release will occur:"
+          echo "=============================================="
+          echo "This can happen when:"
+          echo "• Data files changed but PklProject version wasn't bumped"
+          echo "• Version in PklProject matches the latest GitHub release"
+          echo "• Manual version management is being used"
+          echo ""
+          echo "Current PklProject version: $(pkl eval PklProject -x package.version | tr -d '"')"
+          echo "Latest GitHub release: $(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo 'None')"
+          echo ""
+          echo "💡 To trigger a release:"
+          echo "1. Update the version in PklProject if needed"
+          echo "2. Or wait for automatic patch version bump on next data change"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   release:
     name: Create Release
     runs-on: ubuntu-latest
     needs: build-and-test
-    if: needs.build-and-test.outputs.should-release == 'true'
+    if: needs.build-and-test.outputs.should-release == 'true' && needs.build-and-test.outputs.data-changed == 'true'
 
     steps:
       - name: Checkout code
