@@ -10,12 +10,12 @@ The main TypeScript generation script that converts JSON files from PKL output i
 
 **Usage:**
 ```bash
-node scripts/generate-ts.mjs <dist-dir>
+node tooling/build/generate-ts.mjs <dist-dir>
 ```
 
 **Example:**
 ```bash
-node scripts/generate-ts.mjs dist
+node tooling/build/generate-ts.mjs dist
 ```
 
 This processes all JSON files in `dist/json/` and generates:
@@ -30,7 +30,7 @@ Automated test script that verifies the complete TypeScript build pipeline is wo
 
 **Usage:**
 ```bash
-node scripts/test-build.mjs
+node tooling/build/test-build.mjs
 # or via npm script:
 npm test
 ```
@@ -41,14 +41,14 @@ This script validates:
 - Generated modules can be imported correctly
 - TypeScript definitions are valid
 
-## Makefile Integration
+## Just Integration
 
 The scripts are integrated into the main build system:
 
 ```bash
-make typescript    # Generate TypeScript files
-make npm          # Compile TypeScript to JavaScript
-make all          # Complete build pipeline
+just typescript    # Generate TypeScript files
+just npm          # Compile TypeScript to JavaScript
+just all          # Complete build pipeline
 ```
 
 ## Generated Structure

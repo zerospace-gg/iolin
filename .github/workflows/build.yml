@@ -1,0 +1,373 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    outputs:
+      should-release: ${{ steps.version-check.outputs.should-release }}
+      next-version: ${{ steps.version-check.outputs.next-version }}
+      data-changed: ${{ steps.changes.outputs.data-changed }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pkl
+        uses: pkl-community/setup-pkl@v0
+        with:
+          pkl-version: "0.26.3"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install just
+        uses: extractions/setup-just@v1
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build and test
+        run: just all
+
+      - name: Run tests
+        run: just test-build
+
+      - name: Verify build integrity
+        run: just verify
+
+      - name: Show build statistics
+        run: just stats
+
+      - name: Check for data file changes
+        id: changes
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          # Fetch enough history to compare (in case of shallow clone)
+          git fetch --depth=2 origin main
+
+          # Get the list of changed files
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            # Normal case: compare with previous commit
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+            COMPARISON="HEAD~1..HEAD"
+          else
+            # Edge case: first commit in repo
+            CHANGED_FILES=$(git ls-tree --name-only -r HEAD)
+            COMPARISON="initial commit"
+          fi
+
+          echo "📁 Checking changes in: $COMPARISON"
+          echo "Changed files:"
+          echo "$CHANGED_FILES" | sed 's/^/  /'
+
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "⚠️ No changed files detected"
+            echo "data-changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Define data file patterns that should trigger a release
+          # These patterns match files that contain actual game data or configuration:
+          # - engine/: Core game engine data structures
+          # - meta/: Metadata and indexes
+          # - zerospace/: Game content (units, buildings, factions, etc.)
+          # - PklProject: Main project configuration
+          # - version.pkl: Version configuration
+          DATA_PATTERNS="^(engine/|meta/|zerospace/|PklProject$|version\.pkl$)"
+
+          echo ""
+          echo "🔍 Checking for data file changes..."
+
+          # Check if any changed files match our data patterns
+          DATA_CHANGED=false
+          DATA_FILES=""
+          NON_DATA_FILES=""
+
+          for file in $CHANGED_FILES; do
+            if echo "$file" | grep -qE "$DATA_PATTERNS"; then
+              echo "  ✅ Data file: $file"
+              DATA_CHANGED=true
+              DATA_FILES="$DATA_FILES$file\n"
+            else
+              echo "  ⏭️  Non-data file: $file"
+              NON_DATA_FILES="$NON_DATA_FILES$file\n"
+            fi
+          done
+
+          echo ""
+          if [ "$DATA_CHANGED" = "true" ]; then
+            echo "data-changed=true" >> $GITHUB_OUTPUT
+            echo "✅ DATA FILES CHANGED - Release candidate"
+            echo "Data files that changed:"
+            printf "$DATA_FILES" | sed 's/^/  - /'
+          else
+            echo "data-changed=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ NO DATA FILES CHANGED - Skipping release"
+            echo "Only non-data files changed:"
+            printf "$NON_DATA_FILES" | sed 's/^/  - /'
+          fi
+
+      - name: Check version for release (main branch only)
+        id: version-check
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.changes.outputs.data-changed == 'true'
+        run: |
+          # Get current version from PklProject
+          CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
+          echo "Current version in PklProject: $CURRENT_VERSION"
+
+          # Extract major.minor from current version
+          MAJOR_MINOR=$(echo $CURRENT_VERSION | cut -d. -f1-2)
+          echo "Major.Minor: $MAJOR_MINOR"
+
+          # Get latest release tag
+          LATEST_RELEASE=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
+          echo "Latest release: $LATEST_RELEASE"
+
+          # Determine next version
+          if [ -z "$LATEST_RELEASE" ]; then
+            # No previous releases, use current version
+            NEXT_VERSION="$CURRENT_VERSION"
+            echo "No previous releases found, using current version"
+          else
+            # Check if latest release matches our major.minor
+            RELEASE_MAJOR_MINOR=$(echo $LATEST_RELEASE | cut -d. -f1-2)
+            if [ "$MAJOR_MINOR" = "$RELEASE_MAJOR_MINOR" ]; then
+              # Same major.minor, bump patch
+              PATCH=$(echo $LATEST_RELEASE | cut -d. -f3)
+              NEXT_PATCH=$((PATCH + 1))
+              NEXT_VERSION="${MAJOR_MINOR}.${NEXT_PATCH}"
+              echo "Bumping patch version: $LATEST_RELEASE -> $NEXT_VERSION"
+            else
+              # Different major.minor, use current version (manual bump)
+              NEXT_VERSION="$CURRENT_VERSION"
+              echo "Major.minor changed, using current version: $NEXT_VERSION"
+            fi
+          fi
+
+          echo "next-version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+
+          # Check if we need to create a release
+          if [ "$NEXT_VERSION" != "$LATEST_RELEASE" ]; then
+            echo "should-release=true" >> $GITHUB_OUTPUT
+            echo "Version will be released: $NEXT_VERSION"
+          else
+            echo "should-release=false" >> $GITHUB_OUTPUT
+            echo "No version change needed"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Decision Summary
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          DATA_CHANGED="${{ steps.changes.outputs.data-changed }}"
+          SHOULD_RELEASE="${{ steps.version-check.outputs.should-release }}"
+
+          echo "🔍 Release Decision Summary:"
+          echo "=========================="
+          echo "Data files changed: $DATA_CHANGED"
+          echo "Should release: $SHOULD_RELEASE"
+          echo ""
+
+          if [ "$DATA_CHANGED" = "true" ] && [ "$SHOULD_RELEASE" = "true" ]; then
+            echo "✅ RELEASING: Data changed and version bump needed"
+            echo "   → NPM package will be published"
+            echo "   → GitHub release will be created"
+          elif [ "$DATA_CHANGED" = "false" ]; then
+            echo "⏭️  SKIPPING: No data files changed (tooling/docs only)"
+            echo "   → Changes don't affect game data"
+            echo "   → No release needed"
+          elif [ "$SHOULD_RELEASE" = "false" ]; then
+            echo "⏭️  SKIPPING: No version change needed"
+            echo "   → Data changed but version is same as latest release"
+          else
+            echo "❓ UNKNOWN: Unexpected state"
+          fi
+
+      - name: Data Change Analysis (when no release)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && steps.changes.outputs.data-changed == 'true' && steps.version-check.outputs.should-release != 'true'
+        run: |
+          echo "📊 Data files changed but no release will occur:"
+          echo "=============================================="
+          echo "This can happen when:"
+          echo "• Data files changed but PklProject version wasn't bumped"
+          echo "• Version in PklProject matches the latest GitHub release"
+          echo "• Manual version management is being used"
+          echo ""
+          echo "Current PklProject version: $(pkl eval PklProject -x package.version | tr -d '"')"
+          echo "Latest GitHub release: $(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null || echo 'None')"
+          echo ""
+          echo "💡 To trigger a release:"
+          echo "1. Update the version in PklProject if needed"
+          echo "2. Or wait for automatic patch version bump on next data change"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: needs.build-and-test.outputs.should-release == 'true' && needs.build-and-test.outputs.data-changed == 'true'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pkl
+        uses: pkl-community/setup-pkl@v0
+        with:
+          pkl-version: "0.26.3"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install just
+        uses: extractions/setup-just@v1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update PklProject version
+        run: |
+          VERSION=${{ needs.build-and-test.outputs.next-version }}
+          CURRENT_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
+
+          echo "PklProject version: $CURRENT_VERSION"
+          echo "Release version: $VERSION"
+          echo "Note: Using git tag for Pkl package versioning"
+
+          if [ "$CURRENT_VERSION" != "$VERSION" ]; then
+            echo "⚠️ Version mismatch detected - updating PklProject..."
+
+            # Create backup of original file
+            cp PklProject PklProject.bak
+
+            # Update the version in PklProject file directly
+            sed -i "s/version = \"$CURRENT_VERSION\"/version = \"$VERSION\"/" PklProject
+
+            # Verify the change
+            NEW_VERSION=$(pkl eval PklProject -x package.version | tr -d '"')
+            if [ "$NEW_VERSION" != "$VERSION" ]; then
+              echo "❌ Failed to update version in PklProject"
+              echo "Old version: $CURRENT_VERSION"
+              echo "Expected new version: $VERSION"
+              echo "Actual new version: $NEW_VERSION"
+              echo "Restoring backup..."
+              mv PklProject.bak PklProject
+              exit 1
+            fi
+
+            echo "✅ Successfully updated PklProject version to $VERSION"
+            rm PklProject.bak
+          else
+            echo "✅ PklProject version already matches release version"
+          fi
+
+      - name: Build release packages
+        run: just dist
+
+      - name: Run final tests
+        run: just test-build
+
+      - name: Verify release build
+        run: just verify
+
+      - name: Prepare release artifacts
+        run: |
+          VERSION=${{ needs.build-and-test.outputs.next-version }}
+
+          # Create release directory
+          mkdir -p release-artifacts
+
+          # Package Pkl files (excluding tooling directory)
+          zip -r "release-artifacts/iolin-${VERSION}.zip" . \
+            -x "tooling/*" \
+            -x "node_modules/*" \
+            -x ".git/*" \
+            -x "temp/*" \
+            -x "tmp/*" \
+            -x "tmp_talent_backup/*" \
+            -x ".out/*" \
+            -x ".idea/*" \
+            -x ".env*"
+
+          # Create JSON data bundle
+          cd dist/json
+          zip -r "../../release-artifacts/json-data-${VERSION}.zip" . \
+            -x "*.d.ts"
+          cd ../..
+
+          # Copy NPM package
+          if [ -d "dist/npm" ] && [ "$(ls -A dist/npm)" ]; then
+            cp -r dist/npm "release-artifacts/npm-package"
+          else
+            echo "NPM package not found or empty"
+          fi
+
+          ls -la release-artifacts/
+
+      - name: Setup npm registry authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm
+        run: |
+          cd dist/npm
+          echo "🚀 Publishing @zerospacegg/iolin to npm"
+          echo "Package: @zerospacegg/iolin"
+          echo "Version: ${{ needs.build-and-test.outputs.next-version }}"
+          echo "Registry: https://registry.npmjs.org"
+          npm publish --access public
+          echo "✅ Successfully published to npm!"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build-and-test.outputs.next-version }}
+          name: Release ${{ needs.build-and-test.outputs.next-version }}
+          body: |
+            ## Release ${{ needs.build-and-test.outputs.next-version }}
+
+            ### What's included:
+            - 📦 Pkl package (`iolin-${{ needs.build-and-test.outputs.next-version }}.zip`)
+            - 📊 JSON data bundle (`json-data-${{ needs.build-and-test.outputs.next-version }}.zip`)
+            - 📚 NPM package published as `@zerospacegg/iolin@${{ needs.build-and-test.outputs.next-version }}`
+
+            ### Package Details:
+            - **Type**: ES Module (ESM)
+            - **Node.js**: >=16.0.0
+            - **Installation**: `npm install @zerospacegg/iolin`
+            - **Usage**: `import { Units, Buildings, Factions } from '@zerospacegg/iolin';`
+          files: release-artifacts/*
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release Summary
+        run: |
+          echo "✅ Release ${{ needs.build-and-test.outputs.next-version }} created successfully!"
+          echo "📦 Artifacts included:"
+          echo "  - iolin-${{ needs.build-and-test.outputs.next-version }}.zip (Pkl package)"
+          echo "  - json-data-${{ needs.build-and-test.outputs.next-version }}.zip (JSON data bundle)"
+          echo "  - @zerospacegg/iolin@${{ needs.build-and-test.outputs.next-version }} (published to npm)"

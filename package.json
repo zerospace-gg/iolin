@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "node scripts/test-build.mjs",
+    "test": "node tooling/build/test-build.mjs",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch",
     "clean:npm": "rm -rf dist/npm",
