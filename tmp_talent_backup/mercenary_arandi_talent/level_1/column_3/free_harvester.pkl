@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Free Harvester"
-description = "Gain one harvester instantly and increase the maximum of harvesters by one"

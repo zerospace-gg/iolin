@@ -8,9 +8,9 @@ description = "Community ZeroSpace game data library - units, buildings, abiliti
 main = "index.js"
 types = "index.d.ts"
 files = new Listing {
-  "*.js"
-  "*.d.ts"
-  "*.ts"
+  "**/*.js"
+  "**/*.d.ts"
+  "**/*.ts"
   "README.md"
   "LICENSE"
 }

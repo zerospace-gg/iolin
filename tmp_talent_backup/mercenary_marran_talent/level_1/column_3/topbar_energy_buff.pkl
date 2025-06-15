@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Topbar Energy Buff"
-description = "+100% max power, +100% passive power gain"

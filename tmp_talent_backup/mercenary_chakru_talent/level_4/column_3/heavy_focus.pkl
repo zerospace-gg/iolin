@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Heavy Focus"
-description = "Heavy units take 2 damage less"

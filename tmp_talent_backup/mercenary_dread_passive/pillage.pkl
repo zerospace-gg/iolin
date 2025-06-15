@@ -1,3 +1,0 @@
-amends ".../engine/faction_passive.pkl"
-name = "Pillage"
-description = "Destroying enemy harvesters and buildings provides resources. 33% cost."

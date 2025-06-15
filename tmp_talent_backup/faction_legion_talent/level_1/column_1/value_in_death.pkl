@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Value in Death"
-description = "On death, Thralls heal nearby heroes (30/60hp) or increase attack speed of heroes and vehicles (+15% for 10sec)"

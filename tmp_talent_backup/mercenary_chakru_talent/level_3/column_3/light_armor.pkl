@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Light Armor"
-description = "Light units gain 30% health"

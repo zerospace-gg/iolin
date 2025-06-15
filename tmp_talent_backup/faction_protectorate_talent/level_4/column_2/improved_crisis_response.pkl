@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Improved Crisis Response"
-description = "+25% power gained from lost units and structures"

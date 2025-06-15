@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Valkaru Rage"
-description = "Valkaru mercenaries get stronger when friendly units die nearyby (up to +100% attack speed, 10s duration)"

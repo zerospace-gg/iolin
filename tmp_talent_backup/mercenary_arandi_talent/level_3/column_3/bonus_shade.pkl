@@ -1,3 +1,0 @@
-amends ".../engine/talent.pkl"
-name = "Bonus Shade"
-description = "An additional Shade accompanies all mercenary purchases"
