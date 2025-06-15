@@ -2,7 +2,7 @@ amends "pkl:project"
 
 package {
   name = "iolin"
-  version = "0.9.1"
+  version = "0.9.2"
   baseUri = "package://github.com/zerospace-gg/iolin"
   packageZipUrl = "https://github.com/zerospace-gg/iolin/releases/download/\(version)/iolin-\(version).zip"
 }
